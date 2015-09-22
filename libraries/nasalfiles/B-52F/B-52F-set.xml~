@@ -1,0 +1,550 @@
+<?xml version='1.0'?>
+<!--
+************************************************************************
+B-52F set file.
+
+2006-08-02 Lee Elliott
+2010-09-04 Nguyen Tri Toan Phuc (yasim,effect update)
+************************************************************************
+-->
+
+<PropertyList>
+  <sim>
+
+    <startup>
+      <splash-texture>Aircraft/B-52F/B-52F-splash.rgb</splash-texture>
+    </startup>
+
+    <flight-model>yasim</flight-model>
+    <status>beta</status>
+    <author>Lee Elliott</author>
+    <aero>B-52F-yasim</aero>
+    <fuel-fraction>1.0</fuel-fraction>
+
+    <tags>
+        <tag>bomber</tag>
+        <tag>boeing</tag>
+        <tag>jet</tag>
+        <tag>retractable-gear</tag>
+        <tag>coldwar</tag>
+    </tags>
+    
+    <description>Boeing B-52 F in Arclight colour scheme</description>
+
+    <chase-distance-m type="double" archive="y">-70.0</chase-distance-m>
+
+    <view n="0">
+      <internal archive="y">true</internal>
+      <config>
+        <x-offset-m archive="y">-0.62</x-offset-m>
+        <y-offset-m archive="y">1.53</y-offset-m>
+        <z-offset-m archive="y">3.10</z-offset-m>
+        <pitch-offset-deg>0</pitch-offset-deg>
+        <default-field-of-view-deg>55</default-field-of-view-deg>
+      </config>
+    </view>
+
+    <view n="100">
+      <name>Tail Gunner View</name>
+      <type>lookfrom</type>
+      <internal archive="y">true</internal>
+      <config>
+        <from-model type="bool">true</from-model>
+        <from-model-idx type="int">0</from-model-idx>
+        <ground-level-nearplane-m type="double">0.05f</ground-level-nearplane-m>
+        <default-field-of-view-deg type="double">55.0</default-field-of-view-deg>
+        <default-pitch-deg type="double">0</default-pitch-deg>
+        <default-heading-deg type="double">0</default-heading-deg>
+        <front-direction-deg type="double">0</front-direction-deg>
+        <front-left-direction-deg type="double">45</front-left-direction-deg>
+        <left-direction-deg type="double">90</left-direction-deg>
+        <back-left-direction-deg type="double">135</back-left-direction-deg>
+        <back-direction-deg type="double">180</back-direction-deg>
+        <back-right-direction-deg type="double">225</back-right-direction-deg>
+        <right-direction-deg type="double">270</right-direction-deg>
+        <front-right-direction-deg type="double">315</front-right-direction-deg>
+        <x-offset-m archive="y">0.0</x-offset-m>
+        <y-offset-m archive="y">2.27</y-offset-m>
+        <z-offset-m archive="y">46.94</z-offset-m>
+        <pitch-offset-deg>0</pitch-offset-deg>
+        <default-field-of-view-deg>55</default-field-of-view-deg>
+      </config>
+    </view>
+
+    <view n="101">
+      <name>Drop View</name>
+      <type>lookat</type>
+      <config>
+        <eye-lat-deg-path>/sim/view[101]/latitude-deg</eye-lat-deg-path>
+        <eye-lon-deg-path>/sim/view[101]/longitude-deg</eye-lon-deg-path>
+        <eye-alt-ft-path>/sim/view[101]/altitude-ft</eye-alt-ft-path>
+        <eye-roll-deg-path>/sim/view[101]/roll-deg</eye-roll-deg-path>
+        <eye-pitch-deg-path>/sim/view[101]/pitch-deg</eye-pitch-deg-path>
+        <eye-heading-deg-path>/sim/view[101]/heading-deg</eye-heading-deg-path>
+        <at-model type="bool">true</at-model>
+        <at-model-idx type="int">0</at-model-idx>
+        <ground-level-nearplane-m type="double">1.0f</ground-level-nearplane-m>
+        <default-field-of-view-deg type="double">8.0</default-field-of-view-deg>
+        <x-offset-m type="double">0</x-offset-m>
+        <y-offset-m type="double">0</y-offset-m>
+        <z-offset-m type="double">0</z-offset-m>
+        <target-z-offset-m archive="y" type="double">20.0</target-z-offset-m>
+      </config>
+    </view>
+
+<!-- Shift the camera target point back -->
+    <view n="1">
+      <config>
+        <target-z-offset-m archive="y" type="double">20.0</target-z-offset-m>
+      </config>
+    </view>
+
+    <view n="2">
+      <config>
+        <x-offset-m archive="y" type="double">0.0</x-offset-m>
+        <y-offset-m archive="y" type="double">8.0</y-offset-m>
+        <z-offset-m archive="y">-19.7</z-offset-m>
+        <target-z-offset-m archive="y" type="double">20.0</target-z-offset-m>
+      </config>
+    </view>
+
+    <view n="3">
+      <config>
+        <target-z-offset-m archive="y" type="double">20.0</target-z-offset-m>
+      </config>
+    </view>
+
+    <view n="5">
+      <config>
+        <target-z-offset-m archive="y" type="double">20.0</target-z-offset-m>
+      </config>
+    </view>
+
+    <view n="6">
+      <config>
+        <target-z-offset-m archive="y" type="double">20.0</target-z-offset-m>
+      </config>
+    </view>
+
+    <sound>
+      <audible>true</audible>
+      <path>Aircraft/B-52F/Sounds/B-52F-sound.xml</path>
+    </sound>
+
+    <panel>
+      <path>Aircraft/B-52F/Panels/B-52F-vfr-panel.xml</path>
+    </panel>
+    <panel_2>
+      <path>Aircraft/B-52F/Panels/B-52F-mini-panel.xml</path>
+    </panel_2>
+
+    <hud>
+      <visibility n="1">true</visibility>
+    </hud>
+
+    <model>
+      <path>Aircraft/B-52F/Models/B-52F-model.xml</path>
+    </model>
+
+    <systems>
+      <autopilot>
+        <path>Aircraft/B-52F/Systems/B-52F-autopilot.xml</path>
+      </autopilot>
+    </systems>
+
+<!--sub models -->
+    <submodels>
+      <serviceable type="bool">1</serviceable>
+      <path>Aircraft/B-52F/B-52F-submodels.xml</path>
+    </submodels>
+
+    <flaps>
+      <setting>0.00</setting>
+      <setting>1.00</setting>
+    </flaps>
+
+    <spoilers>
+      <setting>0.000</setting>
+      <setting>0.142</setting>
+      <setting>0.285</setting>
+      <setting>0.428</setting>
+      <setting>0.571</setting>
+      <setting>0.714</setting>
+      <setting>0.857</setting>
+      <setting>1.000</setting>
+    </spoilers>
+
+<!-- AoA Indexer target 1.0 deg -->
+    <aoa-indexer>
+      <too-slow-deg>2.5</too-slow-deg> <!-- target +1.5 deg -->
+      <slow-deg>1.5</slow-deg>         <!-- target +0.5 deg -->
+      <fast-deg>0.5</fast-deg>         <!-- target -0.5 deg -->
+      <too-fast-deg>-0.5</too-fast-deg><!-- target -1.5 deg -->
+    </aoa-indexer>
+
+<!-- Help -->
+    <help>
+      <title>Boeing B-52 F</title>
+      <key>
+        <name>Ctrl-z/Ctrl-\ or Ctrl-y</name>
+        <desc>Steer Right/Left</desc>
+      </key>
+      <key>
+        <name>Shift-D</name>
+        <desc>extract/retract parachute : 5 sec</desc>
+      </key>	  
+      <key>
+        <name>j/k</name>
+        <desc>decrease/increase spoilers</desc>
+      </key>
+      <key>
+        <name>K</name>
+        <desc>toggle trajectory markers</desc>
+      </key>
+      <key>
+        <name>U</name>
+        <desc>update drop view position</desc>
+      </key>
+      <line>Approach AoA 1.0 deg</line>
+      <line>Flaps have only one setting: extended or retracted</line>
+      <line>Flap cycle time 60 seconds</line>
+      <line></line>
+      <line>AP Modes</line>
+      <line> AH - Altitude hold</line>
+      <line> TF - Terrain follow/AGL hold</line>
+      <line> TO - Auto take-off</line>
+      <line> IL - ILS/Auto landing</line>
+      <line> MC - Mach Climb</line>
+      <line></line>
+      <line>Click on AP Mode to turn off all A/P locks.</line>
+      <line></line>
+      <line>The 2D VFR panel is just a place-holder for the radio instruments</line>
+      <line> - use the 2D mini-panel to control the aircraft (Shift-s)</line>
+      <line></line>
+      <line>Set the Altitude hold and TF/AGL settings via the autopilot menu.</line>
+      <line>If an AP Mode is grayed out it is not available</line>
+      <line></line>
+      <line>Use the yaw display to align the landing main gear in cross-wind</line>
+      <line>landings - the rear gear will center itself once the speed is</line>
+      <line>below the transition speed for normal steering</line>
+      <line></line>
+      <line>To use Mach-Climb mode click on the light blue M in the speed</line>
+      <line>instrument to select mach-hold mode, set the required mach</line>
+      <line>you want to maintain, select MC and then either turn off</line>
+      <line>speed locks (Ctrl-s) and set the throttles manually or select</line>
+      <line>KIAS hold (yellow K) and set a high speed - this will force</line>
+      <line>the throttles to 100%</line>
+    </help>
+
+    <gui>
+      <dialogs>
+        <TFA-popup>
+          <config>
+            <dialog include="Dialogs/TFA-popup.xml"/>
+          </config>
+        </TFA-popup>
+      </dialogs>
+    </gui>
+  </sim>
+
+  <gear>
+    <gear n="0">
+      <tyre-smoke type="int">0</tyre-smoke>
+      <sprayspeed-ms type="double">0</sprayspeed-ms>
+      <spray-density type="double">0</spray-density>
+      <caster-angle-deg-damped type="double">0</caster-angle-deg-damped>
+    </gear>
+	<gear n="1">
+      <tyre-smoke type="int">0</tyre-smoke>
+      <sprayspeed-ms type="double">0</sprayspeed-ms>
+      <spray-density type="double">0</spray-density>
+      <caster-angle-deg-damped type="double">0</caster-angle-deg-damped>
+    </gear>
+    <gear n="2">
+      <tyre-smoke type="int">0</tyre-smoke>
+      <sprayspeed-ms type="double">0</sprayspeed-ms>
+      <spray-density type="double">0</spray-density>
+    </gear>
+    <gear n="3">
+      <tyre-smoke type="int">0</tyre-smoke>
+      <sprayspeed-ms type="double">0</sprayspeed-ms>
+      <spray-density type="double">0</spray-density>
+    </gear>
+  </gear>
+
+  <ai>
+    <submodels>
+      <trajectory-markers type="bool">0</trajectory-markers>
+    </submodels>
+  </ai>
+
+<!-- Keyboard changes -->
+  <input>
+    <keyboard>
+
+<!-- Steering -->
+      <key n="26">
+        <name>CTRL-z</name>
+        <desc>Steer Right</desc>
+        <repeatable type="bool">true</repeatable>
+        <binding>
+          <command>property-adjust</command>
+          <property>/controls/gear/steering-front-norm</property>
+          <step type="double">0.001886792</step>
+        </binding>
+      </key>
+      <key n="28">
+        <name>CTRL-\</name>
+        <desc>Steer Left</desc>
+        <repeatable type="bool">true</repeatable>
+        <binding>
+          <command>property-adjust</command>
+          <property>/controls/gear/steering-front-norm</property>
+          <step type="double">-0.001886792</step>
+        </binding>
+      </key>
+<!-- Steering for some latin keyboards where CTRL-\ just don't work-->
+      <key n="25">
+        <name>CTRL-y</name>
+        <desc>Steer Left</desc>
+        <repeatable type="bool">true</repeatable>
+        <binding>
+          <command>property-adjust</command>
+          <property>/controls/gear/steering-front-norm</property>
+          <step type="double">-0.001886792</step>
+        </binding>
+      </key>
+
+
+<!-- Trajectory Markers -->
+      <key n="75">
+        <name>K</name>
+        <desc>Toggle trajectory markers</desc>
+        <binding n="0">
+          <command>nasal</command>
+          <script>B52F.toggle_traj_mkr()</script>
+        </binding>
+      </key>
+<!-- Parachute -->
+      <key n="68">
+        <name>D</name>
+        <desc>Parachut</desc>
+        <binding>
+          <command>nasal</command>
+          <script>B52F.doorsystem.passengerexport();</script>
+        </binding>
+     </key>	  
+<!-- Update Drop View position -->
+      <key n="85">
+        <name>U</name>
+        <desc>Update Drop View position</desc>
+        <binding n="0">
+          <command>nasal</command>
+          <script>B52F.update_drop_view_pos()</script>
+        </binding>
+      </key>
+
+<!-- Flaps -->
+      <key n="91">
+        <name>[</name>
+        <desc>Reduce Flaps</desc>
+        <binding>
+          <step type="double">-1.0</step>
+        </binding>
+      </key>
+      <key n="93">
+        <name>]</name>
+        <desc>Increase Flaps</desc>
+        <binding>
+          <step type="double">1.0</step>
+        </binding>
+      </key>
+
+    </keyboard>
+  </input>
+
+  <autopilot>
+
+    <internal>
+      <atl-weight-lbs type="float">0</atl-weight-lbs>
+    </internal>
+
+    <locks>
+      <aoa type="string">initialised</aoa>
+      <auto-take-off type="string">enabled</auto-take-off>
+      <auto-landing type="string">disabled</auto-landing>
+      <steering-front type="string">initialised</steering-front>
+      <steering-rear type="string">initialised</steering-rear>
+      <rudder-control type="string">initialised</rudder-control>
+      <take-off-phase type="string">initialised</take-off-phase>
+    </locks>
+
+    <settings>
+      <approach-aoa-deg type="float">1.0</approach-aoa-deg>
+      <approach-spoiler-low-weight-lbs type="float">240000</approach-spoiler-low-weight-lbs>
+      <approach-spoiler-max-weight-lbs type="float">360000</approach-spoiler-max-weight-lbs>
+      <flap-extend-aoa-deg type="float">3.8</flap-extend-aoa-deg>
+      <flap-extend-max-speed-kts type="float">220.0</flap-extend-max-speed-kts>
+      <flap-retract-speed-kt type="float">180</flap-retract-speed-kt>
+      <gear-extend-max-speed-kt type="float">170</gear-extend-max-speed-kt>
+      <glide-slope-min-vfps type="float">-40</glide-slope-min-vfps>
+      <steering-yaw-transition-kt type="float">50</steering-yaw-transition-kt>
+      <steering-yaw-transition-sec type="float">15</steering-yaw-transition-sec>
+      <steering-heading-deg type="float">-999.9</steering-heading-deg>
+      <target-agl-ft type="float">200</target-agl-ft>
+      <target-altitude-ft type="float">3000</target-altitude-ft>
+      <target-aoa-deg type="float">1.0</target-aoa-deg>
+      <target-climb-rate-fps type="float">1.0</target-climb-rate-fps>
+      <target-mach type="float">0.46</target-mach>
+      <target-pitch-deg type="float">0</target-pitch-deg>
+      <target-roll-deg type="float">0.0</target-roll-deg>
+      <target-speed-kt type="float">310.0</target-speed-kt>
+      <take-off-heading-deg type="float">0.0</take-off-heading-deg>
+      <take-off-pitch-deg type="float">0.0</take-off-pitch-deg>
+      <climb-out-initial-pitch-deg type="float">-0.5</climb-out-initial-pitch-deg>
+      <climb-out-final-pitch-deg type="float">4.0</climb-out-final-pitch-deg>
+    </settings>
+
+  </autopilot>
+
+<!-- Start with the Parking Brake on and flaps deployed -->
+  <controls>
+    <gear>
+      <brake-parking type="double">1.0</brake-parking>
+      <steering-front-norm type="double">0</steering-front-norm>
+      <steering-rear-norm type="double">0</steering-rear-norm>
+      <steering-front-deg type="float" archive="y">0</steering-front-deg>
+      <steering-rear-deg type="float" archive="y">0</steering-rear-deg>
+    </gear>
+    <flight>
+      <flaps type="double">1.0</flaps>
+    </flight>
+  </controls>
+
+<!-- Engine indexes -->
+  <engines>
+    <engine n="0">
+      <engine-num type="int">0</engine-num>
+    </engine>
+    <engine n="1">
+      <engine-num type="int">1</engine-num>
+    </engine>
+    <engine n="2">
+      <engine-num type="int">2</engine-num>
+    </engine>
+    <engine n="3">
+      <engine-num type="int">3</engine-num>
+    </engine>
+    <engine n="4">
+      <engine-num type="int">4</engine-num>
+    </engine>
+    <engine n="5">
+      <engine-num type="int">5</engine-num>
+    </engine>
+    <engine n="6">
+      <engine-num type="int">6</engine-num>
+    </engine>
+    <engine n="7">
+      <engine-num type="int">7</engine-num>
+    </engine>
+  </engines>
+
+<!-- Fuel -->
+  <consumables>
+    <fuel>
+      <tank n="0">
+        <tank-num type="int">0</tank-num>
+        <kill-when-empty type="bool">false</kill-when-empty>
+      </tank>
+      <tank n="1">
+        <tank-num type="int">1</tank-num>
+        <kill-when-empty type="bool">false</kill-when-empty>
+      </tank>
+      <tank n="2">
+        <tank-num type="int">2</tank-num>
+        <kill-when-empty type="bool">false</kill-when-empty>
+      </tank>
+      <tank n="3">
+        <tank-num type="int">3</tank-num>
+        <kill-when-empty type="bool">false</kill-when-empty>
+      </tank>
+      <tank n="4">
+        <tank-num type="int">4</tank-num>
+        <kill-when-empty type="bool">false</kill-when-empty>
+      </tank>
+      <tank n="5">
+        <tank-num type="int">5</tank-num>
+        <kill-when-empty type="bool">false</kill-when-empty>
+      </tank>
+      <tank n="6">
+        <tank-num type="int">6</tank-num>
+        <kill-when-empty type="bool">false</kill-when-empty>
+      </tank>
+      <tank n="7">
+        <tank-num type="int">7</tank-num>
+        <kill-when-empty type="bool">false</kill-when-empty>
+      </tank>
+      <tank n="8">
+        <tank-num type="int">8</tank-num>
+        <kill-when-empty type="bool">false</kill-when-empty>
+      </tank>
+      <tank n="9">
+        <tank-num type="int">9</tank-num>
+        <kill-when-empty type="bool">false</kill-when-empty>
+      </tank>
+      <tank n="10">
+        <tank-num type="int">10</tank-num>
+        <kill-when-empty type="bool">false</kill-when-empty>
+      </tank>
+      <tank n="11">
+        <tank-num type="int">11</tank-num>
+        <kill-when-empty type="bool">false</kill-when-empty>
+      </tank>
+    </fuel>
+  </consumables>
+
+  <instrumentation>
+    <radar>
+      <range type="int" archive="y">40</range>
+      <minimized type="bool" archive="y">true</minimized>
+    </radar>
+    <terrain-radar>
+      <hi-elev>
+        <alt-ft type="double">-9999.9</alt-ft>
+        <lat-deg type="double">-9999.9</lat-deg>
+        <lon-deg type="double">-9999.9</lon-deg>
+        <dist-m type="double">-9999.9</dist-m>
+        <collision-status type="string">initialised</collision-status>
+      </hi-elev>
+      <settings>
+        <mode type="string">extend</mode>
+        <state type="string">off</state>
+        <range-m type="double">7500</range-m>
+        <step-m type="double">250</step-m>
+        <max-climb-rate-fps type="double">40</max-climb-rate-fps>
+        <warn-climb-rate-fps type="double">35</warn-climb-rate-fps>
+        <hi-elev-markers type="string">initialised</hi-elev-markers>
+      </settings>
+    </terrain-radar>
+  </instrumentation>
+  <!-- Refuel -->
+   <systems>
+    <refuel><type>boom</type>
+      <serviceable type="bool">true</serviceable>
+    </refuel>
+  </systems>
+  
+  <nasal>
+    <B52F>
+      <file>Aircraft/B-52F/Nasal/B-52F.nas</file>
+      <file>Aircraft/B-52F/Nasal/tyresmoke.nas</file>
+	  <file>Aircraft/B-52F/Nasal/doors.nas</file>
+	  <file>Aircraft/B-52F/Nasal/lights.nas</file>
+      <script>start_up();</script>
+    </B52F>
+	<aar>
+      <file>Aircraft/Generic/aar.nas</file>
+    </aar>
+   </nasal>
+
+</PropertyList>

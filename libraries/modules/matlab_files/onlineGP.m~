@@ -1,0 +1,382 @@
+%============================== onlineGP ==================================
+%
+%  This code implements the sparse online GP algorithm presented in the 
+%  reference for basic GP regression with a Gaussian kernel. This version
+%  of the online GP algorithm learns the parameters as well.
+%
+%  This code is currently designed strictly for Gaussin kernels: if
+%  you wish to extend it for non-Gaussian kernels, you MUST change
+%  the values of k* away from unity!
+%
+%  Reference(s): 
+%    Sparse Online Gaussian Processes -Csato and Opper, Tech Report
+%    Csato's thesis
+% 
+%  Inputs:
+%    sigma  	 - bandwidth for the Gaussian kernel; either
+%                  1 x 1 scalar or
+%                  1 x d vector
+%    noise      -  parameter for noise in GP; assumed given by oracle
+%    m          -  the size of your budget
+%    tol        -  tolerance for projection residual
+%
+%  Outputs:
+%    see functions
+%
+%============================== onlineGP ==================================
+%
+%  Name:		onlineGP.m
+%
+%  Author: 		Hassan A. Kingravi
+%
+%  Created:  	2011/02/27
+%  Modified: 	2012/02/29
+%
+%============================== onlineGP ==================================
+function oGP = onlineGP(sigma,noise,m,tol)
+% real variables 
+BV           = [];            % Basis vector set
+K            = [];            % Kernel matrix
+alpha        = [];            % mean parameter 
+C            = [];            % inverted covariance matrix
+Q            = [];            % inverted Gram matrix
+current_size = [];
+obs          = [];
+full         = [];            % variable that checks if budget is hit
+jitter       = 1e-5;
+
+%==[2] Setup the interface functions.
+%
+oGP.process = @process;
+oGP.predict = @predict;
+oGP.update  = @update;
+
+oGP.rollback = @rollback;
+oGP.replace_BV  = @replace_BV;
+oGP.predict_gradient = @predict_gradient;
+
+oGP.save  = @save_model;
+oGP.load  = @load_model;
+oGP.copy  = @copy_model;
+oGP.get = @oGP_get;
+oGP.set = @oGP_set;
+
+
+  %------------------------------- process -------------------------------
+  %
+  %  Takes in a collection of data and generates an initial Gaussian
+  %  process model with the associated kernel matrix, its inversion and
+  %  the alpha vector. Currently, it's assumed that only a single point is
+  %  passed in to initialize.
+  %
+  %  Inputs:
+  %    data  	 - d x 1 data matrix passed in columnwise
+  %    y         - 1 x 1 column vector of observations
+  %
+  %(
+  function process(data,y)
+            
+    % create initial GP model 
+    BV = data;
+    obs = y';
+    current_size = size(data,2);
+    
+    I = eye(current_size);
+    K = kernel(data,data,sigma);
+    Q = (K + jitter.*I)\I; % inverted gram matrix
+    C = (K + noise*I)\I; % less numerically stable than cholesky
+    alpha = C*y';    
+    
+%     noise_x = noise^2 + 1; % compute noise param
+%     Q = y/noise_x;
+%     C = -1/noise_x;    
+%     
+%     K = K + noise^2*eye(current_size);
+%     alpha = y/noise_x;
+  end
+
+  %------------------------------- predict -------------------------------
+  %
+  %  Given a new datapoint, predict a new value based on current model
+  %
+  %(
+  function [f,var_x] = predict(x,covar_type)
+    
+    k = kernel(x,BV,sigma)';
+    f = k'*alpha;
+    
+    if nargout > 1
+      var_x = kernel(x,x,sigma) + k'*C*k;
+      
+      if nargin == 2 && strcmp(covar_type,'full')
+       % do nothing  
+      else 
+        var_x = transpose(diag(var_x));  
+      end   
+    end
+    
+  end
+
+  %------------------------------- update --------------------------------
+  %
+  %  Given a new data pair, update the model; remember, this is passed
+  %  columnwise
+  %(
+  function update(x,y)           
+    % first compute simple upate quantities
+    k_t1 = kernel(x,BV,sigma)';   % pg 9, eqs 30-31   
+    noise_x = noise^2 + k_t1'*C*k_t1 + 1;
+    q_t1 = (y - k_t1'*alpha)/(noise_x + noise^2);
+    r_t1 = -1/(noise_x + noise^2);
+    
+    % compute residual projection update quantities 
+    e_t1 = Q*k_t1; %residual vector pg 6, eq 16
+    gamma_t1 = double(1-k_t1'*e_t1); %novelty of new point w.r.t RKHS: pg 7, eq 23
+    eta_t1 = 1/(1+gamma_t1*r_t1); %numerical stability parameter    
+    
+    %checks to see if point is very close to last point
+    min_dist = min(sum(sqrt((BV-repmat(x,1,size(BV,2))).^2),1));
+    if gamma_t1 < tol
+      % in this case, addition of point to basis doesn't help much, so 
+      % don't add it, and compute update quantities in terms of old vectors
+      % note that data, obs and gram matrix inverse not updated      
+      s_t1 = C*k_t1 + e_t1;                  %pg 5, eqs 9, but modified
+      alpha = alpha + q_t1*eta_t1*s_t1;
+      C = C + r_t1*eta_t1*(s_t1*s_t1'); 
+
+    else
+      % in this case, you need to add the points
+      current_size = current_size + 1;      
+      
+      %in this case, you can simply add the points    
+      s_t1 = [C*k_t1; 1];
+      q_t1*s_t1;
+      alpha = [alpha; 0] + q_t1*s_t1;
+      C = [C zeros(current_size-1,1); zeros(1,current_size)] + r_t1*(s_t1*s_t1'); 
+    
+      % update basis vectors and observations
+      BV = [BV x];
+      obs = [obs; y];
+    
+      % update Gram matrix and inverse      
+      K = [K k_t1; k_t1' 1]; %GIRISHS CODE
+      %K = kernel(BV,BV,sigma); %EDIT BY ROB TO MAKE POS DEF
+      
+      %EDIT: ROB 2-12, when new points are added with new sigma, no longer
+      %PD K
+      %K = [K k_t1; k_t1' 1+noise]
+      %K = K + eye(size(K))*noise; %add noise to make PSD
+      %K(1,1) = K(1,1) + noise;
+      %Q = inv(K);        
+      Q = (K + jitter.*eye(current_size))\eye(size(K,1));
+      
+      if current_size <= m
+        %do nothing   
+      else
+        % now you must delete one of the basis vectors; follow figure 3.3
+        % first, compute which vector is least informative (1), pg 8, eq 27
+        scores = zeros(1,current_size);        
+        for i=1:current_size
+         scores(i) = abs(alpha(i))/Q(i,i);   
+        end
+        
+        %find index of minimum vector
+        [val, index] = min(scores);
+        
+        %now begin update given in (1), pg 8, eq 25
+        
+        %first compute scalar parameters
+        a_s = alpha(index);
+        c_s = C(index,index);
+        q_s = Q(index,index);
+        
+        %compute vector parameters
+        C_s = C(:,index);
+        C_s(index) = [];
+        Q_s = Q(:,index);
+        Q_s(index) = [];
+
+        %shrink matrices
+        alpha(index) = [];
+        C(:,index)   = [];
+        C(index,:)   = [];
+        Q(:,index)   = [];
+        Q(index,:)   = [];
+        K(:,index)   = [];
+        K(index,:)   = [];
+        
+        %finally, compute updates
+        alpha = alpha - (a_s/q_s)*(Q_s);
+        C = C + (c_s/(q_s^2))*(Q_s*Q_s') - (1/q_s)*(Q_s*C_s' + C_s*Q_s');
+        Q = Q - (1/q_s)*(Q_s*Q_s');
+        
+        current_size = current_size - 1;
+        BV(:,index) = [];
+        obs(index) = [];
+      end    
+      
+%       c = (1/gamma_t1);
+%       mc = -c;
+%       Q = [(Q + c*(e_t1*e_t1')) mc*e_t1; mc*e_t1' c];          e      
+    end       
+  end
+
+  
+  function copy_model(new_gp)
+    new_gp.set('BV',BV);
+    new_gp.set('obs',obs);
+    new_gp.set('alpha',alpha);
+    new_gp.set('C',C);
+    new_gp.set('full',full);
+    new_gp.set('K',K);
+    new_gp.set('Q',Q);
+    new_gp.set('current_size',current_size);
+    new_gp.set('sigma',sigma);
+    new_gp.set('noise',noise);
+  end
+
+  %)
+  %----------------------------- save_model -------------------------------
+  %
+  %  Save the current model. Takes as input a string for the filename that
+  %  the model is saved to. 
+  %
+  %(
+  function save_model(model_name)
+    saved_BV = BV;
+    saved_K = K;
+    saved_alpha = alpha;
+    saved_C = C;
+    saved_Q = Q;
+    saved_current_size = current_size;
+    saved_obs = obs;
+    
+    save(model_name,'saved_BV','saved_K','saved_alpha','saved_C', ...
+           'saved_Q','saved_current_size','saved_obs');
+  end   
+
+  %)
+  %----------------------------- load_model -------------------------------
+  %
+  %  Load a model from a file. Takes as input a string for the filename 
+  %  that the model is saved to. 
+  %
+  %(
+  function load_model(sBV,sK,sA,sC,sQ,sCS,sO)
+    BV = sBV;
+    K = sK;
+    alpha = sA;
+    C = sC;
+    Q = sQ;
+    current_size = sCS;
+    obs = sO;
+  end 
+
+  %)
+  %-------------------------------- get --------------------------------
+  %
+  %  Get a requested member variable.
+  %
+  %(
+  function mval = oGP_get(mfield)
+
+  switch(mfield)
+    case {'basis','BV'}
+	  mval = BV;
+    case {'obs'}
+	  mval = obs;      
+	case {'K','kernel'}
+	  mval = K;
+	case {'Q'}
+	  mval = Q;
+	case {'C'}
+	  mval = C;      
+	case {'current_size','size','current size'}
+	  mval = current_size; 
+    case{'full'}
+      full = (current_size >= m);  
+      mval = full; 
+    case{'sigma','bandwidth'}
+      mval = sigma;
+    case{'noise','snr'}
+      mval = noise;
+  end
+
+  end
+
+  %)
+  %-------------------------------- get --------------------------------
+  %
+  %  Get a requested member variable.
+  %
+  %(
+  function oGP_set(mfield,mval)
+
+  switch(mfield)
+    case {'basis','BV'}
+	  BV = mval;
+    case {'obs'}
+	  obs = mval;      
+	case {'K','kernel'}
+	  K = mval;
+	case {'Q'}
+	  Q = mval;
+	case {'C'}
+	  C = mval;      
+	case {'current_size','size','current size'}
+	  current_size = mval; 
+    case{'full'}
+      full = (current_size >= m);  
+      full = mval; 
+    case{'sigma','bandwidth'}
+      sigma = mval;
+    case{'noise','snr'}
+      noise = mval;
+    case{'alpha'}
+      alpha = mval;        
+  end
+
+  end
+
+
+  %)
+  
+  
+end
+
+%============================ Helper Functions ===========================
+
+  %------------------------------- kernel ------------------------------
+  % 
+  %
+  %
+  function [v] =  kernel(x,y,sigma,noise)
+        
+    
+      if(length(sigma) == 1) %same sigma
+                d=x'*y;
+                dx = sum(x.^2,1);
+                dy = sum(y.^2,1);
+                val = repmat(dx',1,length(dy)) + repmat(dy,length(dx),1) - 2*d;
+                v = exp(-val./(2*sigma^2));
+            else
+                isigma = inv(diag(sigma.^2));
+                d =  (x'*isigma)*y;
+                dx = sum((x'*isigma)'.*x,1);
+                dy = sum((y'*isigma)'.*y,1);
+                val = repmat(dx',1,length(dy)) + repmat(dy,length(dx),1) - 2*d;
+                v = exp(-val./2);
+      end
+      if nargin > 3
+          if size(x) == size(y)
+            if x==y
+                v = v + eye(size(v))*noise^2;
+            end
+          end
+      end
+            
+  end
+  
+
+ %================================== kpca =================================
+

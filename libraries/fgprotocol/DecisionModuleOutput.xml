@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<PropertyList>
+<generic>
+
+   <output>
+      <line_separator>newline</line_separator>
+      <var_separator>tab</var_separator>
+	<!--0 -->
+	<chunk>
+         <name>Latitude</name>
+         <node>/mage/player/GNC/Navigation/IMU/latitude-deg</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+      
+	<!--1 -->
+	<chunk>
+         <name>Longitude</name>
+         <node>/mage/player/GNC/Navigation/IMU/longitude-deg</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+      
+	<!--2 -->
+      <chunk>
+         <name>Altitude</name>
+         <node>/mage/player/GNC/Navigation/IMU/altitude-m</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+
+	<!--3 -->
+      <chunk>
+         <name>Altitude</name>
+         <node>/mage/player/GNC/Navigation/IMU/course</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+
+	<!--4 -->
+      <chunk>
+         <name>threat</name>
+         <node>mage/player/Instrumentation/radar/threat</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+	<!--5 -->
+      <chunk>
+         <name>Mage Receive</name>
+         <node>/mage/player/Communications/radio/recv_channel</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>    
+	<!--6 -->
+      <chunk>
+         <name>Mage Receive1</name>
+         <node>/mage/player/Communications/radio/recv_channel[1]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+
+	<!--7 -->
+      <chunk>
+         <name>Mage Receive2</name>
+         <node>/mage/player/Communications/radio/recv_channel[2]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+
+	<!--8 -->
+      <chunk>
+         <name>Mage Receive3</name>
+         <node>/mage/player/Communications/radio/recv_channel[3]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--9 -->
+      <chunk>
+         <name>Mage Receive4</name>
+         <node>/mage/player/Communications/radio/recv_channel[4]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--10 -->
+      <chunk>
+         <name>Mage Receive5</name>
+         <node>/mage/player/Communications/radio/recv_channel[5]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--11 -->
+      <chunk>
+         <name>Mage Receive6</name>
+         <node>/mage/player/Communications/radio/recv_channel[6]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--12 -->
+      <chunk>
+         <name>Mage Receive7</name>
+         <node>/mage/player/Communications/radio/recv_channel[7]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--13 -->
+      <chunk>
+         <name>Mage Receive8</name>
+         <node>/mage/player/Communications/radio/recv_channel[8]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--14 -->
+      <chunk>
+         <name>Mage Receive9</name>
+         <node>/mage/player/Communications/radio/recv_channel[9]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--15 -->
+      <chunk>
+         <name>Mage Receive10</name>
+         <node>/mage/player/Communications/radio/recv_channel[10]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--16 -->
+      <chunk>
+         <name>Mage Receive11</name>
+         <node>/mage/player/Communications/radio/recv_channel[11]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--17 -->
+      <chunk>
+         <name>Mage Receive12</name>
+         <node>/mage/player/Communications/radio/recv_channel[12]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--18 -->
+      <chunk>
+         <name>Mage Receive13</name>
+         <node>/mage/player/Communications/radio/recv_channel[13]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--19 -->
+      <chunk>
+         <name>Mage Receive14</name>
+         <node>/mage/player/Communications/radio/recv_channel[14]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--20 -->
+      <chunk>
+         <name>Mage Receive15</name>
+         <node>/mage/player/Communications/radio/recv_channel[15]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--21 -->
+      <chunk>
+         <name>Mage Receive16</name>
+         <node>/mage/player/Communications/radio/recv_channel[16]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--22 -->
+      <chunk>
+         <name>Mage Receive17</name>
+         <node>/mage/player/Communications/radio/recv_channel[17]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+<!--23 -->
+      <chunk>
+         <name>Mage Receive18</name>
+         <node>/mage/player/Communications/radio/recv_channel[18]</node>
+	 <type>string</type>
+         <format>%s</format>
+      </chunk>
+	
+<!--24 -->
+      <chunk>
+         <name>WP Reached</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/reached</node>
+	 <type>float</type>
+         <format>%f</format>
+      </chunk>
+   </output>      
+
+</generic>
+</PropertyList>

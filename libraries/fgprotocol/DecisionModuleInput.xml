@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<PropertyList>
+<generic>
+
+   <input>
+      <line_separator>newline</line_separator>
+      <var_separator>tab</var_separator>
+		
+      <chunk>
+         <name>Lat-WP1</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/waypoints/lastwp/latlwp-deg</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+	
+      <chunk>
+         <name>Lon-WP1</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/waypoints/lastwp/lonlwp-deg</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+	
+	<chunk>
+         <name>Alt-WP1</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/waypoints/lastwp/altlwp-m</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+
+	<chunk>
+         <name>Course-WP1</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/waypoints/lastwp/courselwp</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+
+	
+	<chunk>
+         <name>Lat-WP2</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/waypoints/currentwp/latcwp-deg</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+
+	
+      <chunk>
+         <name>Lon-WP2</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/waypoints/currentwp/loncwp-deg</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+
+	
+	<chunk>
+         <name>Alt-WP2</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/waypoints/currentwp/altcwp-m</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+
+	<chunk>
+         <name>Course-WP1</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/waypoints/currentwp/coursecwp</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+      	 
+      <chunk>
+         <name>Send Message</name>
+         <node>/mage/player/Communications/radio/send_msg</node>
+         <type>string</type>
+         <format>%s</format>
+      </chunk>
+
+
+   </input>      
+
+</generic>
+</PropertyList>
