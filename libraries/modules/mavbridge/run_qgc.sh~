@@ -1,5 +1,0 @@
-#! /bin/bash
-
-clear
-
-./fgqqclink localhost 15555 12 9101
