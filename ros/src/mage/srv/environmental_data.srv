@@ -1,0 +1,5 @@
+float64 p_x
+float64 p_y
+float64 p_z
+---
+float64 sensor_value

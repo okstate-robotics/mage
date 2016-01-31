@@ -1,0 +1,72 @@
+#!/usr/bin/env python
+
+"""
+ModuleName: ROSNav_Plan.py
+Author: Rakshit Allamraju
+
+This module subscribes to the 'Sensor_data' topic, generates the navigation waypoints for the UAV and publishes to 'Navigation_data' topic
+"""
+
+# python standard libraries
+import os,sys
+import socket
+from math import pi
+
+# Dependencies
+import rospy
+from tutorial.msg import sensor_data, navigation_data
+
+
+def UAV_sensor(Sensor):
+	global p, X
+	# Position data
+	p = array([ [Sensor.Pos_n],[Sensor.Pos_n],[Sensor.Pos_n] ])
+	# Course data
+	X = Sensor.course
+
+
+def NAV_main(argv):
+	if not isinstance(argv[0], str):
+		print "Input Argument must be a string"
+		sys.exit(-1)
+	else:
+		UAV_callsign = argv[0]
+	
+	# Initialize the Navigation and Planning node
+	Node_name = 'ROSNAV_PLAN_'+UAV_callsign
+	rospy.init_node(Node_name, anonymous=True)
+	rate = rospy.Rate(100) # Publish at 100 hz
+
+	# Create a publisher to push data to Navigation_data topic
+	Pub_Topic_name = 'Navigation_data_'+UAV_callsign
+	nav_pub = rospy.Publisher(Pub_Topic_name,navigation_data,queue_size=30)
+	Navigation = navigation_data() # navigation message construct
+
+	# Create a subscriber to subscribe to Sensor_data topic
+	Sub_Topic_name = 'Sensor_data_'+UAV_callsign  ### MAKE SURE TO PASS UAV_callsign AS AN ARG TO THE FNC
+	uav_sub=rospy.Subscriber(Sub_Topic_name, sensor_data, UAV_sensor,queue_size=30) # Get data from Sensor_data topic and initialize the definitions
+	
+
+	while not rospy.is_shutdown():
+		#print p, X
+		# testing data....delete after testing module connections
+		Navigation.Ps_x = 0.0
+		Navigation.Ps_y = 0.0
+		Navigation.Ps_z = 0.0
+		Navigation.Ps_course = 0.0
+		Navigation.Pe_x = 10000.0
+		Navigation.Pe_y = 10000.0
+		Navigation.Pe_z = 10000.0
+		Navigation.Pe_course = 120.0*pi/180
+		
+		nav_pub.publish(Navigation) # publish waypoint data to Navigation_data topic
+
+	print "Stopped publishing nav data"
+	# unregister from Sensor_data topic
+	uav_sub.unregister()
+
+	# Shutdown node
+	err_str = "Shutting down node "+Node_name
+	rospy.signal_shutdown(err_str)
+	#print "Process shutdown"
+	

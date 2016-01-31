@@ -1,0 +1,21 @@
+float32 Pos_n
+float32 Pos_e
+float32 Pos_d
+float32 V_n_ms
+float32 V_e_ms
+float32 V_d_ms
+float32 u
+float32 v
+float32 w
+float32 roll_deg
+float32 pitch_deg
+float32 yaw_deg
+float32 p_body
+float32 q_body
+float32 r_body
+float32 V_airspeed
+float32 course
+float32 ki_x
+float32 ki_y
+float32 ki_z
+

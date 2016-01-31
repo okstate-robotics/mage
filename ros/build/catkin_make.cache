@@ -1,0 +1,2 @@
+mage
+-DCATKIN_DEVEL_PREFIX=/home/daslab-server1/Rakshit/ros/devel -DCMAKE_INSTALL_PREFIX=/home/daslab-server1/Rakshit/ros/install -G Unix Makefiles

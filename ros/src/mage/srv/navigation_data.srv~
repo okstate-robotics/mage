@@ -1,0 +1,25 @@
+float64 P_x
+float64 P_y
+float64 P_z
+---
+float64 Ps_x
+float64 Ps_y
+float64 Ps_z
+float64 Ps_course
+float64 Pe_x
+float64 Pe_y
+float64 Pe_z
+float64 Pe_course
+
+float64 P_x
+float64 P_y
+float64 P_z
+---
+float64 Ps_x
+float64 Ps_y
+float64 Ps_z
+float64 Ps_course
+float64 Pe_x
+float64 Pe_y
+float64 Pe_z
+float64 Pe_course

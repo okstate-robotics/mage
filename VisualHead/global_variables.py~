@@ -1,0 +1,3 @@
+#!/usr/bin/env python
+
+global mpout_IP,mpout_port

@@ -1,0 +1,8 @@
+prefix=/home/daslab-server1/Rakshit/ros/install
+
+Name: mage
+Description: Description of mage
+Version: 0.0.0
+Cflags: -I/home/daslab-server1/Rakshit/ros/install/include
+Libs: -L/home/daslab-server1/Rakshit/ros/install/lib 
+Requires: message_runtime roscpp rospy std_msgs

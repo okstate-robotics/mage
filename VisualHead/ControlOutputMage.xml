@@ -1,0 +1,237 @@
+<?xml version="1.0"?>
+<PropertyList>
+<generic>
+   <output>
+      <line_separator>newline</line_separator>
+      <var_separator>tab</var_separator>
+	<!--0 -->
+      <chunk>
+         <name>Pos-North</name>
+         <node>/mage/player/GNC/Navigation/IMU/Pos_n</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+	<!--1 -->
+      <chunk>
+         <name>Pos-East</name>
+         <node>/mage/player/GNC/Navigation/IMU/Pos_e</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+	<!--2 -->
+      <chunk>
+         <name>Pos-d</name>
+         <node>/mage/player/GNC/Navigation/IMU/Pos_d</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+	<!--3 -->
+	<chunk>
+         <name>Vel-north</name>
+         <node>/mage/player/GNC/Navigation/IMU/V_n-ms</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+	<!--4 -->
+     <chunk>
+         <name>Vel-east</name>
+         <node>/mage/player/GNC/Navigation/IMU/V_e-ms</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+
+	<!--5 -->
+      <chunk>
+         <name>Vel-down</name>
+         <node>/mage/player/GNC/Navigation/IMU/V_d-ms</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+	<!--6 -->
+      <chunk>
+         <name>UBody-ms</name>
+         <node>/mage/player/GNC/Navigation/IMU/u</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+	<!--7 -->
+     <chunk>
+         <name>VBody-ms</name>
+         <node>/mage/player/GNC/Navigation/IMU/v</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+	<!--8 -->
+      <chunk>
+         <name>WBody-ms</name>
+         <node>/mage/player/GNC/Navigation/IMU/w</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+
+	<!--9 -->
+      <chunk>
+         <name>Roll-deg</name>
+         <node>/mage/player/GNC/Navigation/IMU/roll-deg</node>
+         <type>float</type>
+         <format>%f</format>
+	
+      </chunk>
+
+	<!--10 -->
+     <chunk>
+         <name>Pitch-deg</name>
+         <node>/mage/player/GNC/Navigation/IMU/pitch-deg</node>
+         <type>float</type>
+         <format>%f</format>
+	
+      </chunk>
+	
+	<!--11 -->
+      <chunk>
+         <name>Heading-deg</name>
+         <node>/mage/player/GNC/Navigation/IMU/yaw-deg</node>
+         <type>float</type>
+         <format>%f</format>
+	
+      </chunk>
+
+	<!--12 -->
+      <chunk>
+         <name>P-Body</name>
+         <node>/mage/player/GNC/Navigation/IMU/p-body</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+
+	<!--13 -->
+      <chunk>
+         <name>Q-Body</name>
+         <node>/mage/player/GNC/Navigation/IMU/q-body</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+
+	<!--14 -->	
+      <chunk>
+         <name>R-Body</name>
+         <node>/mage/player/GNC/Navigation/IMU/r-body</node>
+         <type>float</type>
+         <format>%f</format>
+      </chunk>
+
+	<!--15 -->
+	<chunk>
+         <name>Airspeed</name>
+         <node>/mage/player/GNC/Navigation/IMU/V-airspeed</node>
+         <type>float</type>
+         <format>%f</format>	 
+      </chunk>
+
+	<!--16 -->
+	<chunk>
+         <name>Course-radians</name>
+         <node>/mage/player/GNC/Navigation/IMU/course</node>
+         <type>float</type>
+         <format>%f</format>	 
+      </chunk>
+
+	<!--17 -->
+	<chunk>
+         <name>Lat-deg</name>
+         <node>/mage/player/GNC/Navigation/IMU/latitude-deg</node>
+         <type>float</type>
+         <format>%f</format>	 
+      </chunk>
+
+	<!--18 -->
+	<chunk>
+         <name>Long-deg</name>
+         <node>/mage/player/GNC/Navigation/IMU/longitude-deg</node>
+         <type>float</type>
+         <format>%f</format>	 
+      </chunk>
+
+	<!--19 -->
+	<chunk>
+         <name>Alt-deg</name>
+         <node>/mage/player/GNC/Navigation/IMU/altitude-m</node>
+         <type>float</type>
+         <format>%f</format>	 
+      </chunk>
+
+	<!--20 -->
+	<chunk>
+         <name>ki_x</name>
+         <node>/mage/player/GNC/Navigation/Navdata/ki/ki_x</node>
+         <type>float</type>
+         <format>%f</format>	 
+      </chunk>
+
+	<!--21 -->
+	<chunk>
+         <name>ki_y</name>
+         <node>/mage/player/GNC/Navigation/Navdata/ki/ki_y</node>
+         <type>float</type>
+         <format>%f</format>	 
+      </chunk>
+
+	<!--22 -->
+	<chunk>
+         <name>ki_z</name>
+         <node>/mage/player/GNC/Navigation/Navdata/ki/ki_z</node>
+         <type>float</type>
+         <format>%f</format>	 
+      </chunk>
+	<!--23 -->
+	<chunk>
+         <name>LastWP-course</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/waypoints/lastwp/courselwp</node>
+         <type>float</type>
+         <format>%f</format>	 
+      </chunk>
+
+	<!--24 -->
+	<chunk>
+         <name>CurrentWP-X</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/waypoints/currentwp/Xcwp</node>
+         <type>float</type>
+         <format>%f</format>	 
+      </chunk>
+
+	<!--25 -->
+	<chunk>
+         <name>CurrentWP-Y</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/waypoints/currentwp/Ycwp</node>
+         <type>float</type>
+         <format>%f</format>	 
+      </chunk>
+
+	<!--26 -->
+	<chunk>
+         <name>CurrentWP-Z</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/waypoints/currentwp/Zcwp</node>
+         <type>float</type>
+         <format>%f</format>	 
+      </chunk>
+	
+	<!--27 -->
+	<chunk>
+         <name>CurrentWP-course</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/waypoints/currentwp/coursecwp</node>
+         <type>float</type>
+         <format>%f</format>	 
+      </chunk>
+	<!--28 -->
+	<chunk>
+         <name>vehicle-Regime</name>
+         <node>/mage/player/GNC/Guidance/Pathplan/regime</node>
+         <type>float</type>
+         <format>%f</format>	 
+      </chunk>
+   </output>
+
+</generic>
+</PropertyList>
+
+
