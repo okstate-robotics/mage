@@ -41,7 +41,7 @@ int main(int argc, char* argv[]){
 	// arg4 = fgconnecting port
 	
 	if(argc != 5){
-		printf("Insufficient number of input arguments\n");
+		printf("Incorrect number of input arguments!!!\n");
 		exit(-1);
 	} 
 	
@@ -145,9 +145,24 @@ int main(int argc, char* argv[]){
 		printf("failed to send to the port %s %d\n", IP_send_to.c_str(), (int) port_send);
 	}
 
+/*
+typedef struct __mavlink_global_position_int_t
+{
+ int32_t lat; ///< Latitude, expressed as * 1E7
+ int32_t lon; ///< Longitude, expressed as * 1E7
+ int32_t alt; ///< Altitude in meters, expressed as * 1000 (millimeters)
+ int16_t vx; ///< Ground X Speed (Latitude), expressed as m/s * 100
+ int16_t vy; ///< Ground Y Speed (Longitude), expressed as m/s * 100
+ int16_t vz; ///< Ground Z Speed (Altitude), expressed as m/s * 100
+} mavlink_global_position_int_t;
+
+static inline uint16_t mavlink_msg_global_position_int_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
+						       uint32_t time_boot_ms, int32_t lat, int32_t lon, int32_t alt, int32_t relative_alt, int16_t vx, int16_t vy, int16_t vz, uint16_t hdg)
+
+*/
 
 	// generate position message -- height needs to be in meters
-	mavlink_msg_global_position_int_pack(vehicle_id, MAV_COMP_ID_IMU, &gnss_message, 0, mavdata[0] * 1E7, mavdata[1] * 1E7, mavdata[2] * 1000,  mavdata[2]*1000, mavdata[3] * 100, mavdata[4] * 100, -mavdata[5] * 100, (uint16_t)mavdata[8]*100);
+	mavlink_msg_global_position_int_pack(vehicle_id, MAV_COMP_ID_IMU, &gnss_message, 0, mavdata[0] * 1E7, mavdata[1] * 1E7, mavdata[2] * 1000,  mavdata[2]*1000, (int16_t)mavdata[3] * 100, (int16_t)mavdata[4] * 100, (int16_t)mavdata[5] * 100, (uint16_t)mavdata[8]*100);
 // mavdata[8] * 100
 	gnss_message_len = mavlink_msg_to_send_buffer(gnss_message_buf, &gnss_message);
 
