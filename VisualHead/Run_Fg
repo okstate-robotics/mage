@@ -1,0 +1,5 @@
+#! /bin/bash
+
+"$HOME/Rakshit/Programs/Flightgear/bin/fgfs" "--fg-root=$HOME/Rakshit/Programs/Flightgear/data" "--enable-freeze" "--generic=socket,bi,10,139.78.79.44,51001,tcp,Protocolc172p" "--callsign=PlayerA" "--prop:/sim/rendering/texture-compression=off" "--httpd=5400" "--runway=28L" "--wind=0@0" "--turbulence=0.0" "--timeofday=noon" "--altitude=4000" "--aircraft=c172r"
+
+#"--generic=socket,in,10,139.78.79.44,51101,tcp,Protocolc172p" 

@@ -147,7 +147,7 @@ int main(int argc, char* argv[]){
 
 
 	// generate position message -- height needs to be in meters
-	mavlink_msg_global_position_int_pack(vehicle_id, MAV_COMP_ID_IMU, &gnss_message, 0, mavdata[0] * 1E7, mavdata[1] * 1E7, mavdata[2] * 1000,  mavdata[2]*1000, mavdata[3] * 100, mavdata[4] * 100, -mavdata[5] * 100, (uint16_t)mavdata[8]*100);
+	mavlink_msg_global_position_int_pack(vehicle_id, MAV_COMP_ID_IMU, &gnss_message, 0, mavdata[1] * 1E7, mavdata[0] * 1E7, mavdata[2] * 1000,  mavdata[2]*1000, mavdata[3] * 100, mavdata[4] * 100, -mavdata[5] * 100, (uint16_t)mavdata[8]*100);
 // mavdata[8] * 100
 	gnss_message_len = mavlink_msg_to_send_buffer(gnss_message_buf, &gnss_message);
 
