@@ -20,7 +20,7 @@ from threading import Thread
 
 def main(argv):
 	start_ros = False # pass as input later
-	launch_delay = 600 #launch time delay b/n 2 uavs # Input in future version
+	launch_delay = 60 #launch time delay b/n 2 uavs # Input in future version
 
 	if start_ros:
 		t = Process(target=startcore, args=())
@@ -41,7 +41,7 @@ def main(argv):
 	print "Starting flightgear visual head ..."
 
 	controller_hosts = {} ##dictionary with key as IP and values as (server_id,no of instances)
-	controller_hosts["139.78.78.169"] = (1,3)	#(server_id,no of instances)
+	controller_hosts["139.78.78.169"] = (1,1)	#(server_id,no of instances)
 	
 	# Compute the total instances of uav thats have been defined
 	total_instances = 0
@@ -59,6 +59,7 @@ def main(argv):
 
 
 	jobs_fg = []
+	uav_counter = 0
 	for controller_hostIP in controller_hosts.keys():	
 		response = os.system("ping -c 1 " + controller_hostIP)
 		if response == 0:
@@ -67,7 +68,9 @@ def main(argv):
 			for instance in xrange(1, controller_hosts[controller_hostIP][1] + 1): #selecting xrange (1,total no of instances)
 		
 				server_id = controller_hosts[controller_hostIP][0]
-				fg = Process(target = FgLibs.FGthread, args = (server_id, instance,controller_hostIP)) 
+				#server_no,instance,controller_hostIP,freq_in=100,freq_out=100,vehicle='c172p',lon=-122.35,lat=37.67,alt=2000,iheading=45,ivel=60				
+				args_tuple = (server_id, instance,controller_hostIP,100,100,'c172p',longitude_list[uav_counter],latitude_list[uav_counter],2000,45,40)
+				fg = Process(target = FgLibs.FGthread, args = args_tuple) 
 				fg.start()
 				print "Started FG Instance %d...Connecting from server %i" % (instance,server_id)
 				sleep(1)
@@ -79,6 +82,7 @@ def main(argv):
 				# Sleep to prevent fg launch error				
 				fg_delay = 30 + launch_delay
 				sleep(fg_delay)
+				uav_counter += 1
 		else:
 			print controller_hostIP + " is down...check connection..."
 			print "System will not run FG connection from server"
