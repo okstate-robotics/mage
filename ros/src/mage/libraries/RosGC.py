@@ -110,8 +110,8 @@ class UAV:
 				#self.Ps = self.Pe #Last Wp #array([[WP_resp.Ps_x],[WP_resp.Ps_y],[WP_resp.Ps_z],[298*pi/180]]) # not a prob now since Ps takes previous Pe values..but fix later
 				self.Ps = array([[Sensor.Pos_n],[Sensor.Pos_e],[Sensor.alt_m],[45*pi/180]]) #take current position as the origin of the path..using ground altitude instead of 'd' from global-local ned
 				self.Pe = array([[WP_resp.Pe_x],[WP_resp.Pe_y],[WP_resp.Pe_z],[WP_resp.Pe_course]])	#return is in NED	
-				print "Origin: ",self.Ps
-				print "Destination: ",self.Pe		
+				#print "Origin: ",self.Ps
+				#print "Destination: ",self.Pe		
 			except rospy.ServiceException, e:
 				print "Service call failed: %s" %e
 

@@ -73,8 +73,8 @@ class UAV:
 		self.cs = Controller(K_P,K_I,K_D,dt) # Controller instance
 		
 		# Initial start and end waypoint
-		self.Ps = array([[0],[0],[900],[45*pi/180]])
-		self.Pe = array([[1500],[1500],[950],[45*pi/180]])
+		self.Ps = array([[0],[0],[1200],[45*pi/180]])
+		self.Pe = array([[1500],[1500],[1250],[45*pi/180]])
 	
 		# initial controller signal
 		c_out = [0.0,0.0,0.0,0.0]

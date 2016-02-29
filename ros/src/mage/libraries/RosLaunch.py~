@@ -27,11 +27,13 @@ GLOBAL_HOME_LONG = -122.35
 GLOBAL_HOME_ALT = 0.0
 
 # Network model
-# Temp value
-Network_model = {}
-Network_model['MAGEF11'] = ['MAGEF12','MAGEF13']
-Network_model['MAGEF12'] = ['MAGEF11','MAGEF13']
-Network_model['MAGEF13'] = ['MAGEF11','MAGEF12']
+import NETWORK
+Network_model = NETWORK.Network_model
+#Network_model = {}
+#Network_model['MAGEF11'] = ['MAGEF12','MAGEF13']
+#Network_model['MAGEF12'] = ['MAGEF11','MAGEF13']
+#Network_model['MAGEF13'] = ['MAGEF11','MAGEF12']
+
 
 
 def main():

@@ -13,7 +13,7 @@ Module services GP model to other uavs and requests GP model from neighbors
 import os,sys
 import socket
 from math import pi
-from time import sleep
+from time import sleep,time
 
 # Dependencies
 import rospy
@@ -21,7 +21,7 @@ from mage.msg import *
 from mage.srv import *
 from numpy import array, zeros
 import matlab.engine
-from multiprocessing import Event 
+from multiprocessing import Event, Process
 
 # Convert from python numpy array to matlab vector
 def array2matlab(py_array):
@@ -42,6 +42,7 @@ def matlab2list(matlab_data):
 	return data_list
 
 
+# =================================================< Uav_Guide class ================================================================================== #
 class Uav_Guide:
 	def __init__(self):
 		pass
@@ -115,8 +116,10 @@ class Uav_Guide:
 		self.Variance = m_out[1]
 		Variance = self.Variance
 		Nav_data_handle = self.Nav_data_handle
-		sleep(60)	
+				
+		sleep(240) # 4min frequency sampling	
 		
+# ============================================================ UAV_Guide class />==========================================================#		
 
 # Service returns GP model requested by client
 def UAV_Model_Req(Request_GP_model):
@@ -130,9 +133,9 @@ def UAV_Model_Req(Request_GP_model):
 		out = Matlab_handle.compressGP(gp,nargout=2)#Matlab_handle.compressGP(gp,nargout=11)
 
 		Response = True	
-
+		A= array(out[1]).T
 		BV = array(out[0]) # BV is now a numpy array
-		obs = matlab2list(out[1]) # is a list
+		obs = A[0].tolist()#array(out[1]) # is a list
 		a_size = BV.shape
 		
 		bv = {}
@@ -142,7 +145,6 @@ def UAV_Model_Req(Request_GP_model):
 		for i in xrange(a_size[0]):
 			bv[i] = BV[i,:].tolist()
 
-		
 		#K = matlab2list(out[2])
 		#Q = matlab2list(out[3])
 		#C = matlab2list(out[4])
@@ -186,6 +188,35 @@ def UAV_Nav_Gen(Request_new_wp):
 		
 
 	return navigation_dataResponse(Request_new_wp.P_x,Request_new_wp.P_y,Request_new_wp.P_z,45*pi/180,New_wp[0][0],New_wp[1][0],1250,45*pi/180) # This output is in NED # in future set Request_new_wp.P_z in place of 950
+
+'''
+Prototype version:work on later
+def DATA_LOG(sys_time_flag):
+	
+	print UAV_callsign +":sys time flag is "+str(sys_time_flag)
+	if (sys_time_flag == 0):
+			
+		try:
+			print UAV_callsign + ":Logging data"
+			gp = Nav_data_handle['ogp']
+			states = Nav_data_handle['states']
+			
+			Matlab_handle.loggp_data(gp,states,UAV_callsign,sys_time,nargout=0)#
+				
+		except:
+			print UAV_callsign + ":unable to log data"
+	else:
+		print "nothing man"
+'''
+				
+def DATA_LOG(sys_time):
+	
+	print UAV_callsign + ":Logging data"
+	gp = Nav_data_handle['ogp']
+	states = Nav_data_handle['states']
+	Matlab_handle.loggp_data(gp,states,UAV_callsign,sys_time,nargout=0)#
+	
+				
 
 
 def NAV_main(argv):
@@ -236,12 +267,24 @@ def NAV_main(argv):
 	
 	# All services started..send signal to guidance process
 	Nav_event.set()
+
+	# DATA LOGGING
+	#data_logging= Process(target = DATA_LOG) # launch a parallel process calling the FG-Control interface
+	#data_logging.start()
 	
 	# Get messages from neighbors
 	#while not rospy.is_shutdown:
 	while True:	
 		
+		#sys_time_flag = round(time()) % 50 Prototype version
+		sys_time = round(time())
+
+		#sys_time_flag = sys_time %60 # for 60 sec logging
+		#DATA_LOG(sys_time_flag)
+		DATA_LOG(sys_time)
 		#print UAV_NEIGHS
+
+		# Iterate over all neighbors
 		for UAV_neigh in UAV_NEIGHS:
 			
 			Service_req = 'Model_data_'+UAV_neigh  # Service name for the neighbor uav
@@ -250,13 +293,13 @@ def NAV_main(argv):
 		
 			try:
 				rospy.wait_for_service(Service_req,timeout=2) # check for service
-				#print UAV_callsign + ":got a response from " + Service_req
+				print UAV_callsign + ":got a response from " + Service_req
 				get_data = rospy.ServiceProxy(Service_req,model_data)
 				resp = get_data(UAV_callsign) # callback which services request
 
 				if resp.Response == True:     # if in neighbor ## just to double check
 
-					#print UAV_callsign+":Obtained model from " + UAV_neigh
+					print UAV_callsign+":Obtained model from " + UAV_neigh
 					gp = uav_smart.Nav_data_handle['ogp'] # current GP model
 					states = uav_smart.Nav_data_handle['states']
 
@@ -297,8 +340,9 @@ def NAV_main(argv):
 			except:
 				#print UAV_callsign+":Service "+ Service_req + " unavailable ..."
 				pass
-		# for every 60 seconds query all services
-		sleep(10)							
+		
+		# for every 360 seconds query all neighbor model services
+		sleep(360)							
 	
 	# spin to prevent main loop from exiting
 	rospy.spin()

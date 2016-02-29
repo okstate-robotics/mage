@@ -74,7 +74,7 @@ def FGthread(server_no,instance,controller_hostIP,freq_in=100,freq_out=100,vehic
 	
 	aircraft = '--aircraft='+vehicle	
 	
-	externals = '--units-meters --wind=0@0 --turbulence=0.0 --timeofday=noon --disable-random-objects --disable-ai-models --disable-clouds3d --disable-clouds --runway=28L --geometry=100x100 --prop:/sim/rendering/multithreading-mode=AutomaticSelection --disable-sound --prop:/controls/engines/engine/starter=true'
+	externals = '--units-meters --wind=0@0 --turbulence=0.0 --timeofday=noon --disable-random-objects --disable-ai-models --disable-clouds3d --disable-clouds --runway=28L --geometry=100x100 --prop:/sim/rendering/multithreading-mode=AutomaticSelection --disable-sound --prop:/controls/engines/engine/starter=true --fog-disable --disable-horizon-effect --disable-specular-highlight'
 	freeze = '--disable-clock-freeze'
 	#geometry=700x400
 	FGcmd = Fgpath+' '+fgcallsign+' '+SOCK+' '+MULTIPLAY+' '+iposition+' '+aircraft+' '+externals+' '+freeze

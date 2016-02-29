@@ -20,7 +20,7 @@ from threading import Thread
 
 def main(argv):
 	start_ros = False # pass as input later
-	launch_delay = 60 #launch time delay b/n 2 uavs # Input in future version
+	launch_delay = 10 #launch time delay b/n 2 uavs # Input in future version
 
 	if start_ros:
 		t = Process(target=startcore, args=())
@@ -41,7 +41,9 @@ def main(argv):
 	print "Starting flightgear visual head ..."
 
 	controller_hosts = {} ##dictionary with key as IP and values as (server_id,no of instances)
-	controller_hosts["139.78.78.169"] = (1,1)	#(server_id,no of instances)
+	controller_hosts["139.78.78.169"] = (1,2)	#(server_id,no of instances)
+	controller_hosts["139.78.79.114"] = (2,4)	#(server_id,no of instances)
+	controller_hosts["139.78.79.84"] = (3,4)	#(server_id,no of instances)
 	
 	# Compute the total instances of uav thats have been defined
 	total_instances = 0
