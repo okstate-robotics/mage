@@ -4,9 +4,9 @@
 ModuleName: RosUavInterface.py
 Author : Rakshit Allamraju
 
-This is an interface module which runs the core exchange between FG, control, planner, communication and Human Operator.
-This module creates a ROS node called 'ROSUAVINTERFACE_<uav_callsign>' and publishes to sensor_data topic. It subscribes to 
-command_data topics.
+This is an interface module which runs the exchange between FG, control, and Human Operator.
+This module creates a ROS node called 'ROSUAVINTERFACE_<uav_callsign>' and publishes to Sensor_data_<UAV_callsign> topic. It subscribes to 
+Command_data_<UAV_callsign> topics.
 """
 
 # python standard libraries
@@ -35,6 +35,7 @@ def ROSUAV_main(argv):
 	GLOBAL_HOME_LAT = float(argv[4])
 	GLOBAL_HOME_LONG = float(argv[5])
 	GLOBAL_HOME_ALT = float(argv[6])
+	FG_event = argv[8]
 
  	
 	#Create the sockets to exchange data with flightgear
@@ -70,6 +71,8 @@ def ROSUAV_main(argv):
 	while not rospy.is_shutdown():
 		
 		data, addr = SOCK_READ.recvfrom(1024) # get data from fg
+		if not FG_event.is_set():
+			FG_event.set() # flag which signals to other processes that sensor data is being received
 		message = data.split('\t')
 		fg_data = map(float,message)
 		
@@ -99,7 +102,7 @@ def ROSUAV_main(argv):
 		Sensor.ki_z = fg_data[22]
 		
 		# roslog the data
-		#rospy.loginfo(Sensor)
+		# rospy.loginfo(Sensor)
 		# publish to topic Sensor_data	
 		uav_pub.publish(Sensor) 	
 		rate.sleep()

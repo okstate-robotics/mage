@@ -1,11 +1,16 @@
 string uav_tag
 ---
 bool Response
-float64[] 
-float64 Ps_y
-float64 Ps_z
-float64 Ps_course
-float64 Pe_x
-float64 Pe_y
-float64 Pe_z
-float64 Pe_course
+int64 rows
+int64 columns
+float64[] BV1
+float64[] BV2
+float64[] BV3
+float64[] BV4
+float64[] BV5
+float64[] BV6
+float64[] BV7
+float64[] BV8
+float64[] BV9
+float64[] W
+

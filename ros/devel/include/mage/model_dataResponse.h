@@ -24,16 +24,76 @@ struct model_dataResponse_
   typedef model_dataResponse_<ContainerAllocator> Type;
 
   model_dataResponse_()
-    : sensor_value()  {
+    : Response(false)
+    , rows(0)
+    , columns(0)
+    , BV1()
+    , BV2()
+    , BV3()
+    , BV4()
+    , BV5()
+    , BV6()
+    , BV7()
+    , BV8()
+    , BV9()
+    , W()  {
     }
   model_dataResponse_(const ContainerAllocator& _alloc)
-    : sensor_value(_alloc)  {
+    : Response(false)
+    , rows(0)
+    , columns(0)
+    , BV1(_alloc)
+    , BV2(_alloc)
+    , BV3(_alloc)
+    , BV4(_alloc)
+    , BV5(_alloc)
+    , BV6(_alloc)
+    , BV7(_alloc)
+    , BV8(_alloc)
+    , BV9(_alloc)
+    , W(_alloc)  {
     }
 
 
 
-   typedef std::vector<double, typename ContainerAllocator::template rebind<double>::other >  _sensor_value_type;
-  _sensor_value_type sensor_value;
+   typedef uint8_t _Response_type;
+  _Response_type Response;
+
+   typedef int64_t _rows_type;
+  _rows_type rows;
+
+   typedef int64_t _columns_type;
+  _columns_type columns;
+
+   typedef std::vector<double, typename ContainerAllocator::template rebind<double>::other >  _BV1_type;
+  _BV1_type BV1;
+
+   typedef std::vector<double, typename ContainerAllocator::template rebind<double>::other >  _BV2_type;
+  _BV2_type BV2;
+
+   typedef std::vector<double, typename ContainerAllocator::template rebind<double>::other >  _BV3_type;
+  _BV3_type BV3;
+
+   typedef std::vector<double, typename ContainerAllocator::template rebind<double>::other >  _BV4_type;
+  _BV4_type BV4;
+
+   typedef std::vector<double, typename ContainerAllocator::template rebind<double>::other >  _BV5_type;
+  _BV5_type BV5;
+
+   typedef std::vector<double, typename ContainerAllocator::template rebind<double>::other >  _BV6_type;
+  _BV6_type BV6;
+
+   typedef std::vector<double, typename ContainerAllocator::template rebind<double>::other >  _BV7_type;
+  _BV7_type BV7;
+
+   typedef std::vector<double, typename ContainerAllocator::template rebind<double>::other >  _BV8_type;
+  _BV8_type BV8;
+
+   typedef std::vector<double, typename ContainerAllocator::template rebind<double>::other >  _BV9_type;
+  _BV9_type BV9;
+
+   typedef std::vector<double, typename ContainerAllocator::template rebind<double>::other >  _W_type;
+  _W_type W;
 
 
 
@@ -112,12 +172,12 @@ struct MD5Sum< ::mage::model_dataResponse_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "2b2d5ff8e67c2fdba43b253521883ba6";
+    return "04370638abb8ec222a0346a1dc53e0fa";
   }
 
   static const char* value(const ::mage::model_dataResponse_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x2b2d5ff8e67c2fdbULL;
-  static const uint64_t static_value2 = 0xa43b253521883ba6ULL;
+  static const uint64_t static_value1 = 0x04370638abb8ec22ULL;
+  static const uint64_t static_value2 = 0x2a0346a1dc53e0faULL;
 };
 
 template<class ContainerAllocator>
@@ -136,7 +196,20 @@ struct Definition< ::mage::model_dataResponse_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "float64[] sensor_value\n\
+    return "bool Response\n\
+int64 rows\n\
+int64 columns\n\
+float64[] BV1\n\
+float64[] BV2\n\
+float64[] BV3\n\
+float64[] BV4\n\
+float64[] BV5\n\
+float64[] BV6\n\
+float64[] BV7\n\
+float64[] BV8\n\
+float64[] BV9\n\
+float64[] W\n\
+\n\
 \n\
 ";
   }
@@ -156,7 +229,19 @@ namespace serialization
   {
     template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)
     {
-      stream.next(m.sensor_value);
+      stream.next(m.Response);
+      stream.next(m.rows);
+      stream.next(m.columns);
+      stream.next(m.BV1);
+      stream.next(m.BV2);
+      stream.next(m.BV3);
+      stream.next(m.BV4);
+      stream.next(m.BV5);
+      stream.next(m.BV6);
+      stream.next(m.BV7);
+      stream.next(m.BV8);
+      stream.next(m.BV9);
+      stream.next(m.W);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER;
@@ -175,11 +260,71 @@ struct Printer< ::mage::model_dataResponse_<ContainerAllocator> >
 {
   template<typename Stream> static void stream(Stream& s, const std::string& indent, const ::mage::model_dataResponse_<ContainerAllocator>& v)
   {
-    s << indent << "sensor_value[]" << std::endl;
-    for (size_t i = 0; i < v.sensor_value.size(); ++i)
+    s << indent << "Response: ";
+    Printer<uint8_t>::stream(s, indent + "  ", v.Response);
+    s << indent << "rows: ";
+    Printer<int64_t>::stream(s, indent + "  ", v.rows);
+    s << indent << "columns: ";
+    Printer<int64_t>::stream(s, indent + "  ", v.columns);
+    s << indent << "BV1[]" << std::endl;
+    for (size_t i = 0; i < v.BV1.size(); ++i)
     {
-      s << indent << "  sensor_value[" << i << "]: ";
-      Printer<double>::stream(s, indent + "  ", v.sensor_value[i]);
+      s << indent << "  BV1[" << i << "]: ";
+      Printer<double>::stream(s, indent + "  ", v.BV1[i]);
+    }
+    s << indent << "BV2[]" << std::endl;
+    for (size_t i = 0; i < v.BV2.size(); ++i)
+    {
+      s << indent << "  BV2[" << i << "]: ";
+      Printer<double>::stream(s, indent + "  ", v.BV2[i]);
+    }
+    s << indent << "BV3[]" << std::endl;
+    for (size_t i = 0; i < v.BV3.size(); ++i)
+    {
+      s << indent << "  BV3[" << i << "]: ";
+      Printer<double>::stream(s, indent + "  ", v.BV3[i]);
+    }
+    s << indent << "BV4[]" << std::endl;
+    for (size_t i = 0; i < v.BV4.size(); ++i)
+    {
+      s << indent << "  BV4[" << i << "]: ";
+      Printer<double>::stream(s, indent + "  ", v.BV4[i]);
+    }
+    s << indent << "BV5[]" << std::endl;
+    for (size_t i = 0; i < v.BV5.size(); ++i)
+    {
+      s << indent << "  BV5[" << i << "]: ";
+      Printer<double>::stream(s, indent + "  ", v.BV5[i]);
+    }
+    s << indent << "BV6[]" << std::endl;
+    for (size_t i = 0; i < v.BV6.size(); ++i)
+    {
+      s << indent << "  BV6[" << i << "]: ";
+      Printer<double>::stream(s, indent + "  ", v.BV6[i]);
+    }
+    s << indent << "BV7[]" << std::endl;
+    for (size_t i = 0; i < v.BV7.size(); ++i)
+    {
+      s << indent << "  BV7[" << i << "]: ";
+      Printer<double>::stream(s, indent + "  ", v.BV7[i]);
+    }
+    s << indent << "BV8[]" << std::endl;
+    for (size_t i = 0; i < v.BV8.size(); ++i)
+    {
+      s << indent << "  BV8[" << i << "]: ";
+      Printer<double>::stream(s, indent + "  ", v.BV8[i]);
+    }
+    s << indent << "BV9[]" << std::endl;
+    for (size_t i = 0; i < v.BV9.size(); ++i)
+    {
+      s << indent << "  BV9[" << i << "]: ";
+      Printer<double>::stream(s, indent + "  ", v.BV9[i]);
+    }
+    s << indent << "W[]" << std::endl;
+    for (size_t i = 0; i < v.W.size(); ++i)
+    {
+      s << indent << "  W[" << i << "]: ";
+      Printer<double>::stream(s, indent + "  ", v.W[i]);
     }
   }
 };

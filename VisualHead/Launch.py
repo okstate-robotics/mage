@@ -69,7 +69,7 @@ def main(argv):
 		
 				server_id = controller_hosts[controller_hostIP][0]
 				#server_no,instance,controller_hostIP,freq_in=100,freq_out=100,vehicle='c172p',lon=-122.35,lat=37.67,alt=2000,iheading=45,ivel=60				
-				args_tuple = (server_id, instance,controller_hostIP,100,100,'c172p',longitude_list[uav_counter],latitude_list[uav_counter],2000,45,40)
+				args_tuple = (server_id, instance,controller_hostIP,100,100,'c172p',longitude_list[uav_counter],latitude_list[uav_counter],4000,45,40)
 				fg = Process(target = FgLibs.FGthread, args = args_tuple) 
 				fg.start()
 				print "Started FG Instance %d...Connecting from server %i" % (instance,server_id)

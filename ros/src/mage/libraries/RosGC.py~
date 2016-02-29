@@ -21,7 +21,6 @@ from mage.srv import *
 from GClibs import *
 
 # Global variables
-
 global c_out
 global UAV_callsign
 c_out = [0.0,0.0,0.0,0.0]
@@ -35,17 +34,17 @@ class UAV:
 	of the definitions
 	"""
 	def UAV_init(self,Sensor):
-		# Global variables	
-		
+		# Global variables			
 		#global Ps, Pe
 		global c_out
-
+		global uav_sub_once
 		# Read data from text file
 		read = ['k_path','k_orbit','kp_phi','ki_phi','kd_phi','kp_t','ki_t','kd_t','kp_psi','ki_psi','kd_psi','kp_v','ki_v','kd_v','kp_alt','ki_alt','kd_alt','kp_x','ki_x','kd_x','dt','R']
 		f = open('config.txt','r')
 
 		data = {}
 		counter = 0
+		# read data from config file and store them in a dict struct called data
 		for line in f:
 			line = line.strip()
 			columns = line.split()
@@ -74,10 +73,13 @@ class UAV:
 		self.cs = Controller(K_P,K_I,K_D,dt) # Controller instance
 		
 		# Initial start and end waypoint
-		self.Ps = array([[0],[0],[500],[45*pi/180]])
-		self.Pe = array([[1500],[1500],[550],[45*pi/180]])
+		self.Ps = array([[0],[0],[900],[45*pi/180]])
+		self.Pe = array([[1500],[1500],[950],[45*pi/180]])
 	
+		# initial controller signal
 		c_out = [0.0,0.0,0.0,0.0]
+		uav_sub_once.unregister() # unregister from UAV_init definitions
+		print UAV_callsign +":Completed Guidance init ..."
 
 
 	"""
@@ -87,14 +89,14 @@ class UAV:
 	def UAV_Run(self,Sensor):	
 		# Global variables	
 		global c_out
-	
-		# Position data
-		p = array([ [Sensor.Pos_n],[Sensor.Pos_e],[Sensor.Pos_d] ])
-		p_LLA = array([ [Sensor.lat_deg],[Sensor.long_deg],[Sensor.alt_m] ])
-		# Course data
+		
+		# get position data from sensor_data topic
+		p = array([ [Sensor.Pos_n],[Sensor.Pos_e],[Sensor.Pos_d] ]) # NED position
+		p_LLA = array([ [Sensor.lat_deg],[Sensor.long_deg],[Sensor.alt_m] ]) # LLA global position, Sensor.alt_m is +ve opposite of the sign of D in NED coordinates
+		# get course data from sensor_data topic
 		X = Sensor.course
 
-		# If completed waypoints get a new one from Navigation_data service		
+		# If completed waypoints, get a new one from Navigation_data service		
 		if self.gs.wp_complete==True:
 			Service_name_nav = 'Nav_data_'+UAV_callsign
 			rospy.wait_for_service(Service_name_nav)
@@ -105,11 +107,14 @@ class UAV:
 				get_data = rospy.ServiceProxy(Service_name_nav,navigation_data)	
 				
 				WP_resp = get_data(p_temp[0][0],p_temp[1][0],p_temp[2][0]) #passing LLA not NED
-				self.Ps = self.Pe #Last Wp #array([[WP_resp.Ps_x],[WP_resp.Ps_y],[WP_resp.Ps_z],[298*pi/180]]) # not a prob now since Ps takes previous Pe values..but fix later
-				self.Pe = array([[WP_resp.Pe_x],[WP_resp.Pe_y],[WP_resp.Pe_z],[WP_resp.Pe_course]])	#return is in NED			
+				#self.Ps = self.Pe #Last Wp #array([[WP_resp.Ps_x],[WP_resp.Ps_y],[WP_resp.Ps_z],[298*pi/180]]) # not a prob now since Ps takes previous Pe values..but fix later
+				self.Ps = array([[Sensor.Pos_n],[Sensor.Pos_e],[Sensor.alt_m],[45*pi/180]]) #take current position as the origin of the path..using ground altitude instead of 'd' from global-local ned
+				self.Pe = array([[WP_resp.Pe_x],[WP_resp.Pe_y],[WP_resp.Pe_z],[WP_resp.Pe_course]])	#return is in NED	
+				print "Origin: ",self.Ps
+				print "Destination: ",self.Pe		
 			except rospy.ServiceException, e:
 				print "Service call failed: %s" %e
-		#print self.Pe
+
 		#check if new wps are generated
 		self.gs.set_wp(self.Ps,self.Pe)		
 		dub_out = self.gs.WPPDubins(p,self.R) # generate the guidance params
@@ -133,10 +138,12 @@ class UAV:
 			
 			h_c = g_out[0] #get the commanded height
 			X_c = g_out[1] # get commanded course
-			V_c = 60 # commanded velocity # 
+			V_c = 60 # commanded velocity # Find how to input later
 			
 			# Sensor data to pass to controller	
-			sensor_in = [Sensor.Pos_n,Sensor.Pos_e,Sensor.Pos_d,Sensor.V_n_ms,Sensor.V_e_ms,Sensor.V_d_ms,Sensor.roll_deg,Sensor.pitch_deg,Sensor.yaw_deg,Sensor.p_body,Sensor.q_body,Sensor.r_body,Sensor.V_airspeed,Sensor.course]
+			#sensor_in = [Sensor.Pos_n,Sensor.Pos_e,Sensor.Pos_d,Sensor.V_n_ms,Sensor.V_e_ms,Sensor.V_d_ms,Sensor.roll_deg,Sensor.pitch_deg,Sensor.yaw_deg,Sensor.p_body,Sensor.q_body,Sensor.r_body,Sensor.V_airspeed,Sensor.course]
+			# USING LOCAL GROUND ALTITUDE INSTEAD OF GLOBAL LOCAL-NED FRAME FOR ALTITUDE HOLD CALCULATIONS
+			sensor_in = [Sensor.Pos_n,Sensor.Pos_e,-1*Sensor.alt_m,Sensor.V_n_ms,Sensor.V_e_ms,Sensor.V_d_ms,Sensor.roll_deg,Sensor.pitch_deg,Sensor.yaw_deg,Sensor.p_body,Sensor.q_body,Sensor.r_body,Sensor.V_airspeed,Sensor.course]
 			
 			c_out = self.cs.control(sensor_in,h_c[0],X_c,V_c,state=REGIME) # get the controller commands to pass to FG
 
@@ -156,34 +163,46 @@ def GC_main(argv):
 	#global Ps, Pe
 	global c_out	
 	global UAV_callsign
+	global uav_sub_once
 
 	uav = UAV()
 	
 	if not isinstance(argv[3], str):
-		print "Input Argument must be a string"
+		print "Input Argument defining UAV callsign must be a string"
+		print "Exiting control ..."
 		sys.exit(-1)
 	else:
 		UAV_callsign = argv[3]
 	
-	# Initialize the GC node
+	
+	# Create and Initialize the GC node
 	Node_name = 'ROSGC_'+UAV_callsign
 	rospy.init_node(Node_name, anonymous=True)
 	rate = rospy.Rate(100) # Publish at 100 hz
 
+	# Wait for signal from UAVinterface process
+	FG_event = argv[8]
+	FG_event.wait()
+	print UAV_callsign +":FG link established...waiting for navigation process"
+	sleep(2)
+	# wait for signal from Nav process
+	Nav_event = argv[9]	
+	Nav_event.wait()
+	print UAV_callsign +":Navigation process running...started guidance process"
+	sleep(2)
+
 	# Create the publisher instance to push data to Command_data topic
-	Pub_Topic_name = 'Command_data_'+UAV_callsign ### MAKE SURE TO PASS UAV_callsign AS ARG TO FNC
+	Pub_Topic_name = 'Command_data_'+UAV_callsign 
 	uav_pub = rospy.Publisher(Pub_Topic_name,command_data,queue_size=10)
 	Commands = command_data() # message type
 
 	# Create the subscriber to get data from Sensor_data topic
+	Sub_Topic_name = 'Sensor_data_'+UAV_callsign  
+	uav_sub_once=rospy.Subscriber(Sub_Topic_name, sensor_data, uav.UAV_init,queue_size=5) # Get data from Sensor_data topic and initialize the definitions
+	sleep(5) 		
 	Sub_Topic_name = 'Sensor_data_'+UAV_callsign  ### MAKE SURE TO PASS UAV_callsign AS AN ARG TO THE FNC
-	uav_sub=rospy.Subscriber(Sub_Topic_name, sensor_data, uav.UAV_init,queue_size=10) # Get data from Sensor_data topic and initialize the definitions
-	sleep(1) 
-	uav_sub.unregister()
-	sleep(4)
-	Sub_Topic_name = 'Sensor_data_'+UAV_callsign  ### MAKE SURE TO PASS UAV_callsign AS AN ARG TO THE FNC
-	uav_sub=rospy.Subscriber(Sub_Topic_name, sensor_data, uav.UAV_Run,queue_size=10) # Get data from Sensor_data topic and execute the guidance & control loop
-
+	uav_sub=rospy.Subscriber(Sub_Topic_name, sensor_data, uav.UAV_Run,queue_size=5) # Get data from Sensor_data topic and execute the guidance & control loop
+	print UAV_callsign +":All systems Running \n"
 	
 	while not rospy.is_shutdown():
 		# Create the ROS message
@@ -191,10 +210,10 @@ def GC_main(argv):
 		Commands.elevator = c_out[2]
 		Commands.rudder = c_out[3]
 		Commands.throttle = c_out[0]
-		Commands.reached = int(uav.gs.wp_complete)
+		Commands.reached = 0#;int(uav.gs.wp_complete)
 
 		# roslog the commands
-		#rospy.loginfo(Commands)
+		# rospy.loginfo(Commands)
 		# publish to Command_data topic
 		uav_pub.publish(Commands)
 		rate.sleep()

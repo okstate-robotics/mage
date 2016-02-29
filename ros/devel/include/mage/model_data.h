@@ -40,7 +40,7 @@ template<>
 struct MD5Sum< ::mage::model_data > {
   static const char* value()
   {
-    return "d6d9b942834d28e624aa435306692dcb";
+    return "068069642642797e324175cfa8a60121";
   }
 
   static const char* value(const ::mage::model_data&) { return value(); }

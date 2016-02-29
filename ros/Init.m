@@ -5,7 +5,7 @@ function Navplan = Init(LLA,Sensor_val)%,[lat_b1,lat_b2],[lon_b1,lon_b2]
 a = 6378137;
 b = 6356752.3142;
 
-LLA_home = [37.64,-122.48,2000];
+LLA_home = [37.67,-122.35,4000];
 alpha = LLA_home(1)*pi/180;
 omega = LLA_home(2)*pi/180;
 h = LLA_home(3)*0.3048;
@@ -21,35 +21,47 @@ N = Rot(alpha,-E1)*N1;E = Rot(alpha,-E1)*E1;D=Rot(alpha,-E1)*D1;
 
 % Create the state space
 
-n_row = 40;
-n_col = 40;
+%n_row = 50;
+%n_col = 50;
 
-x = linspace(36,38,n_col); % discretize the latitudes
-y = linspace(-123,-120,n_row); % discretize the longitudes
+%x = linspace(36,38,n_col); % discretize the latitudes
+%y = linspace(-123,-120,n_row); % discretize the longitudes
+x = 38:-0.1:36;
+y = -123:0.1:-120;
+n_row = length(x);
+n_col = length(y);
 [X,Y] = meshgrid(x,y); 
 states = [reshape(X,1,length(x)*length(y));reshape(Y,1,length(x)*length(y))];
 
 % find the LAT and LONG closest to inputs in the statespace
-Lat_temp = abs(x-LLA(1));
-[idx idx] = min(Lat_temp); %index of closest value
-LAT_close = x(idx); %closest value
-LLA_SS(1) =  LAT_close;
+A = repmat([LLA(1);LLA(2)],1,size(states,2))-states;
+dist2 = diag(A'*A);
+dist = sqrt(dist2);
+min_dist_ind = dist == min(dist);
 
-Long_temp = abs(y-LLA(2));
-[idy,idy] = min(Long_temp);
-LONG_close = y(idy);
-LLA_SS(2) = LONG_close;
+LLA_SS(1) = states(1,min_dist_ind);
+LLA_SS(2) = states(2,min_dist_ind);
+
+%Lat_temp = abs(x-LLA(1));
+%[idx idx] = min(Lat_temp); %index of closest value
+%LAT_close = x(idx); %closest value
+%LLA_SS(1) =  LAT_close;
+
+%Long_temp = abs(y-LLA(2));
+%[idy,idy] = min(Long_temp);
+%LONG_close = y(idy);
+%LLA_SS(2) = LONG_close;
 
 LLA_SS(3) = LLA(3);
 
 % GP_params
-sigma = [0.01;0.01];
-noise = 0.001;
+sigma = [0.1;0.1];
+noise = 0.01;
 ncent = 200; 
 tol = 1e-4;
 
 ogp = onlineGP(sigma,noise,ncent,tol);
-ogp.process([LLA_SS(1);LLA(2)],Sensor_val)
+ogp.process([LLA_SS(1);LLA_SS(2)],Sensor_val)
 %[~,post_var] = ogp.predict(states); 
 %,'gw',gw,'ogp',ogp
 gw = GPGridWorld(n_row,n_col);

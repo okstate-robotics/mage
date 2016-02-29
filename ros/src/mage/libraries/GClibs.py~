@@ -201,6 +201,7 @@ class Guidance:
 		s = e_ip - dot(e_ip.T,n)*n
 
 		h_c = -r[2] + sqrt(s[0]**2+s[1]**2)*(q[2]/sqrt(q[0]**2+q[1]**2)) 
+		#h_c = r[2] + sqrt(s[0]**2+s[1]**2)*(q[2]/sqrt(q[0]**2+q[1]**2)) 
 		
 		e_py = -sin(X_q)*(p[0]-r[0])+cos(X_q)*(p[1]-r[1])
 
@@ -269,7 +270,7 @@ class Controller:
 		if self.flag == 1:
 			# alt hold
 			theta_des = -1*self.H.pid_out(h_c,z_pos,H_lim)
-			print 'error in alt',self.H.e_p
+			#print 'error in alt',self.H.e_p
 			# course hold 
 			phi_des = self.X.pid_out(X_c,course,X_lim)
 			#print 'error in course',self.X.e_p

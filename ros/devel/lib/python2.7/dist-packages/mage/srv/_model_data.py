@@ -7,14 +7,14 @@ import struct
 
 
 class model_dataRequest(genpy.Message):
-  _md5sum = "2bc9ec58afd3958ddfccccd825801682"
+  _md5sum = "e75b9c8170f04b3132758172c329fd03"
   _type = "mage/model_dataRequest"
   _has_header = False #flag to mark the presence of a Header object
-  _full_text = """float64[] p
+  _full_text = """string uav_tag
 
 """
-  __slots__ = ['p']
-  _slot_types = ['float64[]']
+  __slots__ = ['uav_tag']
+  _slot_types = ['string']
 
   def __init__(self, *args, **kwds):
     """
@@ -24,7 +24,7 @@ class model_dataRequest(genpy.Message):
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       p
+       uav_tag
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -33,10 +33,10 @@ class model_dataRequest(genpy.Message):
     if args or kwds:
       super(model_dataRequest, self).__init__(*args, **kwds)
       #message fields cannot be None, assign default values for those that are
-      if self.p is None:
-        self.p = []
+      if self.uav_tag is None:
+        self.uav_tag = ''
     else:
-      self.p = []
+      self.uav_tag = ''
 
   def _get_types(self):
     """
@@ -50,10 +50,15 @@ class model_dataRequest(genpy.Message):
     :param buff: buffer, ``StringIO``
     """
     try:
-      length = len(self.p)
-      buff.write(_struct_I.pack(length))
-      pattern = '<%sd'%length
-      buff.write(struct.pack(pattern, *self.p))
+      _x = self.uav_tag
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      if python3:
+        buff.write(struct.pack('<I%sB'%length, length, *_x))
+      else:
+        buff.write(struct.pack('<I%ss'%length, length, _x))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
 
@@ -67,10 +72,12 @@ class model_dataRequest(genpy.Message):
       start = end
       end += 4
       (length,) = _struct_I.unpack(str[start:end])
-      pattern = '<%sd'%length
       start = end
-      end += struct.calcsize(pattern)
-      self.p = struct.unpack(pattern, str[start:end])
+      end += length
+      if python3:
+        self.uav_tag = str[start:end].decode('utf-8')
+      else:
+        self.uav_tag = str[start:end]
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -83,10 +90,15 @@ class model_dataRequest(genpy.Message):
     :param numpy: numpy python module
     """
     try:
-      length = len(self.p)
-      buff.write(_struct_I.pack(length))
-      pattern = '<%sd'%length
-      buff.write(self.p.tostring())
+      _x = self.uav_tag
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      if python3:
+        buff.write(struct.pack('<I%sB'%length, length, *_x))
+      else:
+        buff.write(struct.pack('<I%ss'%length, length, _x))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
 
@@ -101,10 +113,12 @@ class model_dataRequest(genpy.Message):
       start = end
       end += 4
       (length,) = _struct_I.unpack(str[start:end])
-      pattern = '<%sd'%length
       start = end
-      end += struct.calcsize(pattern)
-      self.p = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
+      end += length
+      if python3:
+        self.uav_tag = str[start:end].decode('utf-8')
+      else:
+        self.uav_tag = str[start:end]
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -119,15 +133,28 @@ import struct
 
 
 class model_dataResponse(genpy.Message):
-  _md5sum = "2b2d5ff8e67c2fdba43b253521883ba6"
+  _md5sum = "04370638abb8ec222a0346a1dc53e0fa"
   _type = "mage/model_dataResponse"
   _has_header = False #flag to mark the presence of a Header object
-  _full_text = """float64[] sensor_value
+  _full_text = """bool Response
+int64 rows
+int64 columns
+float64[] BV1
+float64[] BV2
+float64[] BV3
+float64[] BV4
+float64[] BV5
+float64[] BV6
+float64[] BV7
+float64[] BV8
+float64[] BV9
+float64[] W
+
 
 
 """
-  __slots__ = ['sensor_value']
-  _slot_types = ['float64[]']
+  __slots__ = ['Response','rows','columns','BV1','BV2','BV3','BV4','BV5','BV6','BV7','BV8','BV9','W']
+  _slot_types = ['bool','int64','int64','float64[]','float64[]','float64[]','float64[]','float64[]','float64[]','float64[]','float64[]','float64[]','float64[]']
 
   def __init__(self, *args, **kwds):
     """
@@ -137,7 +164,7 @@ class model_dataResponse(genpy.Message):
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       sensor_value
+       Response,rows,columns,BV1,BV2,BV3,BV4,BV5,BV6,BV7,BV8,BV9,W
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -146,10 +173,46 @@ class model_dataResponse(genpy.Message):
     if args or kwds:
       super(model_dataResponse, self).__init__(*args, **kwds)
       #message fields cannot be None, assign default values for those that are
-      if self.sensor_value is None:
-        self.sensor_value = []
+      if self.Response is None:
+        self.Response = False
+      if self.rows is None:
+        self.rows = 0
+      if self.columns is None:
+        self.columns = 0
+      if self.BV1 is None:
+        self.BV1 = []
+      if self.BV2 is None:
+        self.BV2 = []
+      if self.BV3 is None:
+        self.BV3 = []
+      if self.BV4 is None:
+        self.BV4 = []
+      if self.BV5 is None:
+        self.BV5 = []
+      if self.BV6 is None:
+        self.BV6 = []
+      if self.BV7 is None:
+        self.BV7 = []
+      if self.BV8 is None:
+        self.BV8 = []
+      if self.BV9 is None:
+        self.BV9 = []
+      if self.W is None:
+        self.W = []
     else:
-      self.sensor_value = []
+      self.Response = False
+      self.rows = 0
+      self.columns = 0
+      self.BV1 = []
+      self.BV2 = []
+      self.BV3 = []
+      self.BV4 = []
+      self.BV5 = []
+      self.BV6 = []
+      self.BV7 = []
+      self.BV8 = []
+      self.BV9 = []
+      self.W = []
 
   def _get_types(self):
     """
@@ -163,10 +226,48 @@ class model_dataResponse(genpy.Message):
     :param buff: buffer, ``StringIO``
     """
     try:
-      length = len(self.sensor_value)
+      _x = self
+      buff.write(_struct_B2q.pack(_x.Response, _x.rows, _x.columns))
+      length = len(self.BV1)
       buff.write(_struct_I.pack(length))
       pattern = '<%sd'%length
-      buff.write(struct.pack(pattern, *self.sensor_value))
+      buff.write(struct.pack(pattern, *self.BV1))
+      length = len(self.BV2)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(struct.pack(pattern, *self.BV2))
+      length = len(self.BV3)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(struct.pack(pattern, *self.BV3))
+      length = len(self.BV4)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(struct.pack(pattern, *self.BV4))
+      length = len(self.BV5)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(struct.pack(pattern, *self.BV5))
+      length = len(self.BV6)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(struct.pack(pattern, *self.BV6))
+      length = len(self.BV7)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(struct.pack(pattern, *self.BV7))
+      length = len(self.BV8)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(struct.pack(pattern, *self.BV8))
+      length = len(self.BV9)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(struct.pack(pattern, *self.BV9))
+      length = len(self.W)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(struct.pack(pattern, *self.W))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
 
@@ -177,13 +278,81 @@ class model_dataResponse(genpy.Message):
     """
     try:
       end = 0
+      _x = self
+      start = end
+      end += 17
+      (_x.Response, _x.rows, _x.columns,) = _struct_B2q.unpack(str[start:end])
+      self.Response = bool(self.Response)
       start = end
       end += 4
       (length,) = _struct_I.unpack(str[start:end])
       pattern = '<%sd'%length
       start = end
       end += struct.calcsize(pattern)
-      self.sensor_value = struct.unpack(pattern, str[start:end])
+      self.BV1 = struct.unpack(pattern, str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV2 = struct.unpack(pattern, str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV3 = struct.unpack(pattern, str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV4 = struct.unpack(pattern, str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV5 = struct.unpack(pattern, str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV6 = struct.unpack(pattern, str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV7 = struct.unpack(pattern, str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV8 = struct.unpack(pattern, str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV9 = struct.unpack(pattern, str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.W = struct.unpack(pattern, str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -196,10 +365,48 @@ class model_dataResponse(genpy.Message):
     :param numpy: numpy python module
     """
     try:
-      length = len(self.sensor_value)
+      _x = self
+      buff.write(_struct_B2q.pack(_x.Response, _x.rows, _x.columns))
+      length = len(self.BV1)
       buff.write(_struct_I.pack(length))
       pattern = '<%sd'%length
-      buff.write(self.sensor_value.tostring())
+      buff.write(self.BV1.tostring())
+      length = len(self.BV2)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(self.BV2.tostring())
+      length = len(self.BV3)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(self.BV3.tostring())
+      length = len(self.BV4)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(self.BV4.tostring())
+      length = len(self.BV5)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(self.BV5.tostring())
+      length = len(self.BV6)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(self.BV6.tostring())
+      length = len(self.BV7)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(self.BV7.tostring())
+      length = len(self.BV8)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(self.BV8.tostring())
+      length = len(self.BV9)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(self.BV9.tostring())
+      length = len(self.W)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(self.W.tostring())
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
 
@@ -211,20 +418,89 @@ class model_dataResponse(genpy.Message):
     """
     try:
       end = 0
+      _x = self
+      start = end
+      end += 17
+      (_x.Response, _x.rows, _x.columns,) = _struct_B2q.unpack(str[start:end])
+      self.Response = bool(self.Response)
       start = end
       end += 4
       (length,) = _struct_I.unpack(str[start:end])
       pattern = '<%sd'%length
       start = end
       end += struct.calcsize(pattern)
-      self.sensor_value = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
+      self.BV1 = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV2 = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV3 = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV4 = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV5 = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV6 = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV7 = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV8 = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.BV9 = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.W = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
 
 _struct_I = genpy.struct_I
+_struct_B2q = struct.Struct("<B2q")
 class model_data(object):
   _type          = 'mage/model_data'
-  _md5sum = 'd6d9b942834d28e624aa435306692dcb'
+  _md5sum = '068069642642797e324175cfa8a60121'
   _request_class  = model_dataRequest
   _response_class = model_dataResponse

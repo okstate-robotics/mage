@@ -201,6 +201,7 @@ class Guidance:
 		s = e_ip - dot(e_ip.T,n)*n
 
 		h_c = -r[2] + sqrt(s[0]**2+s[1]**2)*(q[2]/sqrt(q[0]**2+q[1]**2)) 
+		#h_c = r[2] + sqrt(s[0]**2+s[1]**2)*(q[2]/sqrt(q[0]**2+q[1]**2)) 
 		
 		e_py = -sin(X_q)*(p[0]-r[0])+cos(X_q)*(p[1]-r[1])
 

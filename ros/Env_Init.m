@@ -1,6 +1,7 @@
 %function [states,E] = Env_Init()%,[lat_b1,lat_b2],[lon_b1,lon_b2]
 % Create the state space
-load 'ch4'
+%load 'ch4'
+load CH4
  % x = 36:0.1:38;
 %y = -123.:0.1:-120;
 %[X,Y] = meshgrid(x,y); 

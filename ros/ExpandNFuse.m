@@ -1,6 +1,6 @@
 function gp_main = ExpandNFuse(gp_main,states,BV,obs)%,K,Q,C,current_size,sigma,noise,jitter,reg_type,alpha)
     % GP_params
-sigma1 = [0.1;0.03];
+sigma1 = [0.05;0.05];
 noise1 = 0.01;
 ncent = 200; 
 tol = 1e-4;
@@ -21,9 +21,9 @@ ngp.process(BV,obs)
 
     % GPFUSION
    [~,v1] = gp_main.predict(states);
-    [m2,v2] = ngp.predict(states);
+   [m2,v2] = ngp.predict(states);
     
-    indicies = find(v2 < 0.02 & v1 > 0.95);
+    indicies = find(v2 < 0.2 & v1 > 0.9)
     if ~isempty(indicies)
         X = states(:,indicies);
         Y = m2(indicies);

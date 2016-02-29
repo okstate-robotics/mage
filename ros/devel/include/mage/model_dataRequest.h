@@ -24,16 +24,16 @@ struct model_dataRequest_
   typedef model_dataRequest_<ContainerAllocator> Type;
 
   model_dataRequest_()
-    : p()  {
+    : uav_tag()  {
     }
   model_dataRequest_(const ContainerAllocator& _alloc)
-    : p(_alloc)  {
+    : uav_tag(_alloc)  {
     }
 
 
 
-   typedef std::vector<double, typename ContainerAllocator::template rebind<double>::other >  _p_type;
-  _p_type p;
+   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _uav_tag_type;
+  _uav_tag_type uav_tag;
 
 
 
@@ -112,12 +112,12 @@ struct MD5Sum< ::mage::model_dataRequest_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "2bc9ec58afd3958ddfccccd825801682";
+    return "e75b9c8170f04b3132758172c329fd03";
   }
 
   static const char* value(const ::mage::model_dataRequest_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x2bc9ec58afd3958dULL;
-  static const uint64_t static_value2 = 0xdfccccd825801682ULL;
+  static const uint64_t static_value1 = 0xe75b9c8170f04b31ULL;
+  static const uint64_t static_value2 = 0x32758172c329fd03ULL;
 };
 
 template<class ContainerAllocator>
@@ -136,7 +136,7 @@ struct Definition< ::mage::model_dataRequest_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "float64[] p\n\
+    return "string uav_tag\n\
 ";
   }
 
@@ -155,7 +155,7 @@ namespace serialization
   {
     template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)
     {
-      stream.next(m.p);
+      stream.next(m.uav_tag);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER;
@@ -174,12 +174,8 @@ struct Printer< ::mage::model_dataRequest_<ContainerAllocator> >
 {
   template<typename Stream> static void stream(Stream& s, const std::string& indent, const ::mage::model_dataRequest_<ContainerAllocator>& v)
   {
-    s << indent << "p[]" << std::endl;
-    for (size_t i = 0; i < v.p.size(); ++i)
-    {
-      s << indent << "  p[" << i << "]: ";
-      Printer<double>::stream(s, indent + "  ", v.p[i]);
-    }
+    s << indent << "uav_tag: ";
+    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.uav_tag);
   }
 };
 
